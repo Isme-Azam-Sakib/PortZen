@@ -1,0 +1,177 @@
+:root {
+    --font-family-base: 'Space Grotesk', sans-serif;
+}
+
+/* Global font settings */
+*, 
+*::before, 
+*::after {
+    font-family: var(--font-family-base);
+}
+
+.hero {
+    width: 100vw; /* Full viewport width */
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                url('https://cdn.pixabay.com/photo/2016/05/08/22/41/graffiti-1380103_1280.jpg') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+/* Modern Auth Pages Styling */
+.auth-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem 0;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.auth-card .card-header {
+    background: transparent;
+    border-bottom: none;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #4a5568;
+    padding: 1.5rem 1.5rem 0.5rem;
+}
+
+.auth-card .card-body {
+    padding: 2rem;
+}
+
+.auth-form-control {
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.auth-form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.auth-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    font-weight: 500;
+}
+
+.auth-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+}
+
+.auth-link {
+    color: #667eea;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.auth-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.auth-divider {
+    margin: 1.5rem 0;
+    text-align: center;
+    position: relative;
+}
+
+.invalid-feedback {
+    font-size: 0.875rem;
+    color: #e53e3e;
+    margin-top: 0.5rem;
+}
+
+/* Font weights */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-base);
+    font-weight: 700;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+/* Component overrides */
+.nav-link {
+    font-weight: 500;
+}
+
+.btn {
+    font-weight: 500;
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+/* Tailwind component overrides */
+[class*="text-sm"] {
+    font-family: var(--font-family-base);
+}
+
+[class*="font-medium"] {
+    font-family: var(--font-family-base);
+}
+
+[class*="font-semibold"] {
+    font-family: var(--font-family-base);
+}
+
+/* Add to your existing style.css */
+.template-card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.template-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.template-card .card-body {
+    padding: 1.5rem;
+}
+
+.template-card .card-title {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.template-card .btn {
+    margin-top: 1rem;
+}
