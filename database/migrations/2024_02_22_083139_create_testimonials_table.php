@@ -11,9 +11,11 @@ return new class extends Migration
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
-            $table->string('client_name');
-            $table->text('feedback');
-            $table->string('client_image')->nullable();
+            $table->string('name');
+            $table->string('position')->nullable();
+            $table->string('company')->nullable();
+            $table->text('content');
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

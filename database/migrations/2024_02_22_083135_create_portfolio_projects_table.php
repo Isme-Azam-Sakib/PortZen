@@ -11,12 +11,12 @@ return new class extends Migration
         Schema::create('portfolio_projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->text('description');
-            $table->json('skills_used')->nullable();
-            $table->json('images')->nullable();
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->string('project_url')->nullable();
-            $table->string('client_name')->nullable();
+            $table->string('github_url')->nullable();
+            $table->json('technologies')->nullable();
             $table->timestamps();
         });
     }

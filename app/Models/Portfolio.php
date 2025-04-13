@@ -22,17 +22,18 @@ class Portfolio extends Model
         'skills',
         'tools',
         'experience_level',
-        'social_links',
         'email',
         'phone',
         'website_url',
-        'slug'
+        'social_links',
+        'is_public'
     ];
 
     protected $casts = [
         'skills' => 'array',
         'tools' => 'array',
-        'social_links' => 'array'
+        'social_links' => 'array',
+        'is_public' => 'boolean'
     ];
 
     public function user(): BelongsTo

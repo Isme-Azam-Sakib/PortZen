@@ -11,12 +11,13 @@ return new class extends Migration
         Schema::create('work_experiences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
-            $table->string('job_title');
             $table->string('company_name');
+            $table->string('position');
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->boolean('is_current')->default(false);
-            $table->text('responsibilities');
+            $table->text('description')->nullable();
+            $table->string('location')->nullable();
             $table->timestamps();
         });
     }

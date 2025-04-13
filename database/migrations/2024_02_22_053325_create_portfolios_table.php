@@ -24,12 +24,12 @@ return new class extends Migration
             $table->string('profile_image')->nullable();
             $table->json('skills')->nullable();
             $table->json('tools')->nullable();
-            $table->enum('experience_level', ['beginner', 'intermediate', 'expert'])->default('beginner');
-            $table->json('social_links')->nullable();
+            $table->enum('experience_level', ['beginner', 'intermediate', 'expert']);
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('website_url')->nullable();
-            $table->string('slug')->unique();
+            $table->json('social_links')->nullable();
+            $table->boolean('is_public')->default(true);
             $table->timestamps();
         });
     }

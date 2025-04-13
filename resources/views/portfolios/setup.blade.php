@@ -9,7 +9,7 @@
                     <h3 class="mb-0">Portfolio Details</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('portfolios.store') }}" method="POST" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('portfolios.store') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="template_id" value="{{ $template->id }}">
 
@@ -66,7 +66,9 @@
                             <div class="skill-inputs">
                                 <input type="text" class="form-control mb-2 @error('skills.0') is-invalid @enderror"
                                        name="skills[]" placeholder="Enter a skill">
-                                <button type="button" class="btn btn-secondary btn-sm add-skill">+ Add Skill</button>
+                                <button type="button" class="btn btn-secondary btn-sm add-skill">
+                                    <i class="fas fa-plus"></i> Add Skill
+                                </button>
                             </div>
                             @error('skills.*')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -78,7 +80,9 @@
                             <div class="tool-inputs">
                                 <input type="text" class="form-control mb-2 @error('tools.0') is-invalid @enderror"
                                        name="tools[]" placeholder="Enter a tool">
-                                <button type="button" class="btn btn-secondary btn-sm add-tool">+ Add Tool</button>
+                                <button type="button" class="btn btn-secondary btn-sm add-tool">
+                                    <i class="fas fa-plus"></i> Add Tool
+                                </button>
                             </div>
                             @error('tools.*')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -132,28 +136,34 @@
                             <label class="form-label">Social Media Links</label>
                             <div class="social-inputs">
                                 <div class="input-group mb-2">
+                                    <span class="input-group-text"><i class="fas fa-share-alt"></i></span>
                                     <select class="form-select" name="social_links[0][platform]" required>
                                         <option value="">Select Platform</option>
-                                        <option value="behance">Behance</option>
-                                        <option value="dribbble">Dribbble</option>
-                                        <option value="linkedin">LinkedIn</option>
-                                        <option value="instagram">Instagram</option>
-                                        <option value="twitter">Twitter</option>
+                                        <option value="behance"><i class="fab fa-behance"></i> Behance</option>
+                                        <option value="dribbble"><i class="fab fa-dribbble"></i> Dribbble</option>
+                                        <option value="linkedin"><i class="fab fa-linkedin"></i> LinkedIn</option>
+                                        <option value="instagram"><i class="fab fa-instagram"></i> Instagram</option>
+                                        <option value="twitter"><i class="fab fa-twitter"></i> Twitter</option>
                                     </select>
+                                    <span class="input-group-text"><i class="fas fa-link"></i></span>
                                     <input type="url" class="form-control" 
                                            name="social_links[0][url]" 
                                            placeholder="https://..."
                                            pattern="https?://.+"
                                            title="Include http:// or https:// in the URL">
                                 </div>
-                                <button type="button" class="btn btn-secondary btn-sm add-social">+ Add Social Link</button>
+                                <button type="button" class="btn btn-secondary btn-sm add-social">
+                                    <i class="fas fa-plus"></i> Add Social Link
+                                </button>
                             </div>
                             @error('social_links.*')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Create Portfolio</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Create Portfolio
+                        </button>
                     </form>
                 </div>
             </div>
@@ -162,49 +172,6 @@
 </div>
 
 @push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add Skill
-    document.querySelector('.add-skill').addEventListener('click', function() {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'form-control mb-2';
-        input.name = 'skills[]';
-        input.placeholder = 'Enter a skill';
-        this.parentElement.insertBefore(input, this);
-    });
-
-    // Add Tool
-    document.querySelector('.add-tool').addEventListener('click', function() {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'form-control mb-2';
-        input.name = 'tools[]';
-        input.placeholder = 'Enter a tool';
-        this.parentElement.insertBefore(input, this);
-    });
-
-    // Add Social Link
-    let socialCount = 1;
-    document.querySelector('.add-social').addEventListener('click', function() {
-        const div = document.createElement('div');
-        div.className = 'input-group mb-2';
-        div.innerHTML = `
-            <select class="form-select" name="social_links[${socialCount}][platform]">
-                <option value="behance">Behance</option>
-                <option value="dribbble">Dribbble</option>
-                <option value="linkedin">LinkedIn</option>
-                <option value="instagram">Instagram</option>
-                <option value="twitter">Twitter</option>
-            </select>
-            <input type="url" class="form-control" 
-                   name="social_links[${socialCount}][url]" 
-                   placeholder="Enter URL">
-        `;
-        this.parentElement.insertBefore(div, this);
-        socialCount++;
-    });
-});
-</script>
+<script src="{{ asset('js/portfolio-setup.js') }}"></script>
 @endpush
 @endsection 
