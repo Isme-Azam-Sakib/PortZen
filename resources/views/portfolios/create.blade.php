@@ -43,5 +43,6 @@
     </div>
 </div>
 
+<input type="hidden" name="template_id" value="{{ request('template_id') }}">
 
 @endsection

@@ -50,4 +50,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Portfolio::class);
     }
+
+    /**
+     * Get the user's primary portfolio.
+     */
+    public function portfolio()
+    {
+        return $this->hasOne(Portfolio::class)->latest();
+    }
 }

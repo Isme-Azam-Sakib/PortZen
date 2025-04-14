@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,6 +49,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/portfolios/{portfolio}', [PortfolioController::class, 'destroy'])->name('portfolios.destroy');
 
     Route::resource('portfolios', PortfolioController::class);
+
+    // Gallery Routes
+    Route::post('/portfolio/gallery/upload', [GalleryController::class, 'upload'])
+        ->name('portfolio.gallery.upload');
+    Route::delete('/portfolio/gallery/{image}', [GalleryController::class, 'destroy'])
+        ->name('portfolio.gallery.destroy');
 });
 
 require __DIR__.'/auth.php';

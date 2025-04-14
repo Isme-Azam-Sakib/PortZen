@@ -70,5 +70,10 @@ class Portfolio extends Model
     {
         return $this->hasMany(Testimonial::class);
     }
+
+    public function galleryImages()
+    {
+        return $this->hasMany(GalleryImage::class);
+    }
 }
 

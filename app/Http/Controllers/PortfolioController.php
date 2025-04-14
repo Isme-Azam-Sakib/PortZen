@@ -109,14 +109,32 @@ class PortfolioController extends Controller
 
     public function show(Portfolio $portfolio)
     {
-        // Add some debugging
-        \Log::info('Showing portfolio:', ['id' => $portfolio->id]);
+        // Add better debugging
+        \Log::info('Showing portfolio:', [
+            'id' => $portfolio->id, 
+            'template_id' => $portfolio->template_id
+        ]);
         
         // Check if portfolio is public or belongs to authenticated user
         if (!$portfolio->is_public && (!Auth::check() || Auth::id() !== $portfolio->user_id)) {
             abort(403, 'This portfolio is private.');
         }
 
+        // Check if the portfolio has template_id = 1 (Modern Portfolio)
+        if ($portfolio->template_id == 1) {
+            // Check both templates and tempaltes folders (to handle potential typo)
+            if (view()->exists('templates.modern-portfolio')) {
+                return view('templates.modern-portfolio', compact('portfolio'));
+            }
+            
+            if (view()->exists('tempaltes.modern-portfolio')) {
+                return view('tempaltes.modern-portfolio', compact('portfolio'));
+            }
+            
+            \Log::warning('Template view not found for template_id=1');
+        }
+
+        // Fall back to default template
         return view('portfolios.show', compact('portfolio'));
     }
 
@@ -165,6 +183,33 @@ class PortfolioController extends Controller
 
         return redirect()->route('portfolios.show', $portfolio)
             ->with('success', 'Portfolio updated successfully!');
+    }
+
+    public function template()
+    {
+        return $this->belongsTo(Template::class);
+    }
+
+    public function destroy(Portfolio $portfolio)
+    {
+        // Check if the current user owns this portfolio
+        if ($portfolio->user_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You are not authorized to delete this portfolio.');
+        }
+
+        try {
+            // Delete profile image if exists
+            if ($portfolio->profile_image) {
+                Storage::disk('public')->delete($portfolio->profile_image);
+            }
+
+            // Delete the portfolio
+            $portfolio->delete();
+
+            return redirect()->route('dashboard')->with('success', 'Portfolio deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('dashboard')->with('error', 'Failed to delete portfolio: ' . $e->getMessage());
+        }
     }
 }
 
