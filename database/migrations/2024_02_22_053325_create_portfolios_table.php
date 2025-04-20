@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('tagline')->nullable();
             $table->text('bio')->nullable();
             $table->string('profile_image')->nullable();
+            $table->string('banner_image')->nullable();
             $table->json('skills')->nullable();
             $table->json('tools')->nullable();
             $table->enum('experience_level', ['beginner', 'intermediate', 'expert']);

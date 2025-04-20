@@ -167,16 +167,26 @@ class PortfolioController extends Controller
             'skills' => 'required|array',
             'tools' => 'nullable|array',
             'social_links' => 'nullable|array',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         // Handle profile image upload if a new one is provided
         if ($request->hasFile('profile_image')) {
             // Delete old image if it exists
             if ($portfolio->profile_image) {
-                Storage::delete($portfolio->profile_image);
+                Storage::disk('public')->delete($portfolio->profile_image);
             }
             $validated['profile_image'] = $request->file('profile_image')->store('profile-images', 'public');
+        }
+
+        // Handle banner image upload if a new one is provided
+        if ($request->hasFile('banner_image')) {
+            // Delete old banner image if it exists
+            if ($portfolio->banner_image) {
+                Storage::disk('public')->delete($portfolio->banner_image);
+            }
+            $validated['banner_image'] = $request->file('banner_image')->store('banner-images', 'public');
         }
 
         $portfolio->update($validated);

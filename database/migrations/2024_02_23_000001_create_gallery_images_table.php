@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
             $table->string('image_path');
-            $table->string('caption')->nullable();
-            $table->integer('sort_order')->default(0);
+            $table->text('caption')->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

@@ -31,6 +31,27 @@
                             @enderror
                         </div>
 
+                        <div class="mb-4">
+                            <label class="form-label">Banner Image</label>
+                            <div class="d-flex align-items-center gap-3">
+                                @if($portfolio->banner_image)
+                                    <div class="position-relative" style="width: 200px;">
+                                        <img src="{{ asset('storage/' . $portfolio->banner_image) }}" 
+                                             class="img-fluid rounded" 
+                                             alt="Current Banner">
+                                    </div>
+                                @endif
+                                <div class="flex-grow-1">
+                                    <input type="file" class="form-control @error('banner_image') is-invalid @enderror" 
+                                           id="banner_image" name="banner_image" accept="image/*">
+                                    <div class="form-text">Recommended size: 1920x1080px. Max size: 2MB</div>
+                                    @error('banner_image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="tagline" class="form-label">Tagline</label>
                             <input type="text" class="form-control @error('tagline') is-invalid @enderror" 

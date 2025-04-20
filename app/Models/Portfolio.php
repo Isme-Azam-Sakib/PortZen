@@ -19,6 +19,7 @@ class Portfolio extends Model
         'tagline',
         'bio',
         'profile_image',
+        'banner_image',
         'skills',
         'tools',
         'experience_level',

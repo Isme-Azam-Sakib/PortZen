@@ -7,15 +7,15 @@
         <div></div>
         <div></div>
         <div></div>
-    </div>
-</div>
+            </div>
+        </div>
 
 <div class="page-border" data-wow-duration="0.7s" data-wow-delay="0.2s">
     <div class="top-border wow fadeInDown animated"></div>
     <div class="right-border wow fadeInRight animated"></div>
     <div class="bottom-border wow fadeInUp animated"></div>
     <div class="left-border wow fadeInLeft animated"></div>
-</div>
+    </div>
 
 <div id="wrapper">
     <header id="banner" class="scrollto clearfix" data-enllax-ratio=".5">
@@ -26,7 +26,7 @@
                     <div id="logo">
                         <img src="{{ asset('templates/modern/images/logo.png') }}" id="banner-logo" alt="Portfolio"/>
                         <img src="{{ asset('templates/modern/images/logo-2.png') }}" id="navigation-logo" alt="Portfolio"/>
-                    </div>
+            </div>
 
                     <aside>
                         <!--Social Icons in Header-->
@@ -95,7 +95,7 @@
                                     <p>{{ $portfolio->experience_level }}</p>
                                 </div>
                             </div>
-                        @endforeach
+                    @endforeach
                     @endif
                 </div>
             </div>
@@ -109,30 +109,30 @@
                     <div class="section-heading">
                         <h3>EXPERIENCE</h3>
                         <h2 class="section-title">Professional Background</h2>
-                    </div>
-                </div>
+        </div>
+    </div>
                 
                 <div class="col-2-3">
-                    @foreach($portfolio->workExperiences as $experience)
+            @foreach($portfolio->workExperiences as $experience)
                         <div class="col-2 icon-block wow fadeInUp">
                             <div class="icon-block-description">
-                                <h4>{{ $experience->job_title }}</h4>
+                            <h4>{{ $experience->job_title }}</h4>
                                 <h5>{{ $experience->company_name }}</h5>
-                                <p class="text-muted">
-                                    {{ $experience->start_date->format('M Y') }} - 
-                                    {{ $experience->is_current ? 'Present' : $experience->end_date->format('M Y') }}
-                                </p>
-                                <p>{{ $experience->responsibilities }}</p>
-                            </div>
+                            <p class="text-muted">
+                                {{ $experience->start_date->format('M Y') }} - 
+                                {{ $experience->is_current ? 'Present' : $experience->end_date->format('M Y') }}
+                            </p>
+                            <p>{{ $experience->responsibilities }}</p>
                         </div>
+                    </div>
                     @endforeach
-                </div>
-            </div>
-        </section>
-        @endif
+        </div>
+    </div>
+</section>
+@endif
 
         <!--Portfolio Projects Section-->
-        @if($portfolio->portfolioProjects->count() > 0)
+@if($portfolio->portfolioProjects->count() > 0)
         <section id="projects" class="scrollto clearfix">
             <div class="row clearfix">
                 <div class="section-heading">
@@ -140,7 +140,7 @@
                     <h2 class="section-title">Recent Projects</h2>
                 </div>
                 
-                @foreach($portfolio->portfolioProjects as $project)
+            @foreach($portfolio->portfolioProjects as $project)
                     <div class="col-3 wow fadeInUp">
                         @if($project->images)
                             <div class="gallery-item">
@@ -152,7 +152,7 @@
                             </div>
                         @endif
                     </div>
-                @endforeach
+                                @endforeach
             </div>
         </section>
         @endif
@@ -160,56 +160,62 @@
         <!--Gallery Section-->
         <section id="gallery" class="scrollto clearfix">
             <div class="row clearfix">
-                <div class="col-3">
-                    <div class="section-heading">
-                        <h3>GALLERY</h3>
-                        <h2 class="section-title">My Work</h2>
-                        
-                        @if(auth()->id() == $portfolio->user_id)
-                        <div class="gallery-upload-section">
-                            <form action="{{ route('portfolio.gallery.upload') }}" method="POST" 
-                                  enctype="multipart/form-data" id="galleryUploadForm">
-                                @csrf
-                                <div class="upload-wrapper">
-                                    <label for="gallery_images" class="upload-btn">
-                                        <i class="fa fa-cloud-upload"></i> Add Images
-                                    </label>
-                                    <input type="file" id="gallery_images" name="images[]" 
-                                           multiple accept="image/*" style="display: none;">
-                                    <small class="text-muted">Max 30 images allowed</small>
-                                </div>
-                            </form>
-                            <div class="upload-progress-container" style="display: none;">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 0%;"></div>
-                                </div>
-                                <div class="progress-text">0%</div>
+                <div class="section-heading gallery-header">
+                    <h3>GALLERY</h3>
+                    <h2 class="section-title">My Work</h2>
+                    
+                    @if(auth()->id() == $portfolio->user_id)
+                    <div class="gallery-upload-section">
+                        <form action="{{ route('portfolio.gallery.upload') }}" method="POST" 
+                              enctype="multipart/form-data" id="galleryUploadForm">
+                            @csrf
+                            <div class="upload-wrapper">
+                                <label for="gallery_images" class="upload-btn">
+                                    <i class="fa fa-cloud-upload"></i>
+                                </label>
+                                <input type="file" id="gallery_images" name="images[]" 
+                                       multiple accept="image/*" style="display: none;">
                             </div>
+                        </form>
+                        <div class="upload-progress-container" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%;"></div>
+                            </div>
+                            <div class="progress-text">0%</div>
                         </div>
-                        @endif
                     </div>
+                    @endif
                 </div>
 
-                <div class="col-2-3">
-                    <div class="gallery-grid" id="galleryGrid">
+                <div class="gallery-container">
+                    <div class="gallery-grid">
                         @foreach($portfolio->galleryImages as $image)
-                            <div class="gallery-item wow fadeInUp" data-wow-delay="{{ $loop->index * 0.1 }}s">
-                                <div class="gallery-item-inner">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="Gallery Image">
-                                    @if(auth()->id() == $portfolio->user_id)
-                                        <div class="gallery-item-overlay">
-                                            <button class="delete-image" data-image-id="{{ $image->id }}">
+                            <div class="gallery-item">
+                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Gallery Image">
+                                @if(auth()->id() == $portfolio->user_id)
+                                    <div class="gallery-item-overlay">
+                                        <div class="gallery-actions">
+                                            <button class="action-btn caption-image" data-image-id="{{ $image->id }}" title="Add Caption">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button class="action-btn move-image" data-image-id="{{ $image->id }}" title="Reorder">
+                                                <i class="fa fa-arrows"></i>
+                                            </button>
+                                            <button class="action-btn delete-image" data-image-id="{{ $image->id }}" title="Delete">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
+                                        @if($image->caption)
+                                            <div class="image-caption">{{ $image->caption }}</div>
+                                        @endif
+                                    </div>
+                                @endif
                 </div>
-            </div>
-        </section>
+            @endforeach
+                    </div>
+        </div>
+    </div>
+</section>
 
         <!-- Keep original testimonials section as is -->
         <aside id="testimonials" class="scrollto text-center" data-enllax-ratio=".2">
@@ -236,8 +242,8 @@
                                 <i class="fa fa-phone fa-2x"></i>
                                 <p>{{ $portfolio->phone }}</p>
                             </div>
-                            @endif
-                            
+@endif
+
                             @if($portfolio->website_url)
                             <div class="contact-item">
                                 <i class="fa fa-globe fa-2x"></i>
@@ -309,23 +315,30 @@
             </ul>
         </div>
     </footer>
-</div>
+    </div>
 
 <!-- Contact Section Styles -->
 <style>
 .contact-info {
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
 .contact-item {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
+    padding: 5px 0;
 }
 
 .contact-item i {
-    margin-right: 15px;
+    margin-right: 10px;
     color: #764ba2;
+    width: 25px;
+}
+
+.contact-item p {
+    margin: 0;
+    line-height: 1.4;
 }
 
 .social-links {
@@ -395,168 +408,247 @@
 }
 
 /* Gallery Styles */
+.gallery-header {
+    position: relative;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.gallery-upload-section {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.section-title:hover + .gallery-upload-section,
+.gallery-upload-section:hover {
+    opacity: 1;
+}
+
+.gallery-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
+    gap: 10px;
+    min-height: 100px;
 }
 
 .gallery-item {
     position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-
-.gallery-item:hover {
-    transform: translateY(-5px);
-}
-
-.gallery-item-inner {
-    position: relative;
-    padding-bottom: 100%;
+    display: block;
+    width: 100%;
+    height: fit-content;
+    line-height: 0;
+    break-inside: avoid;
+    background: none;
+    padding: 0;
+    margin: 0;
 }
 
 .gallery-item img {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
     object-fit: cover;
 }
 
 .gallery-item-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+    border-radius: 4px;
+    pointer-events: none;
 }
 
 .gallery-item:hover .gallery-item-overlay {
     opacity: 1;
+    pointer-events: auto;
 }
 
-.delete-image {
-    background: #ff4444;
+.gallery-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn {
+    position: relative;
+    z-index: 2;
     color: white;
     border: none;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+}
+
+.action-btn i {
+    font-size: 1.2em;
+}
+
+.caption-image {
+    background: rgba(52, 152, 219, 0.9);
+}
+
+.caption-image:hover {
+    transform: scale(1.1);
+    background: rgba(52, 152, 219, 1);
+}
+
+.move-image {
+    background: rgba(46, 204, 113, 0.9);
+    cursor: move;
+}
+
+.move-image:hover {
+    transform: scale(1.1);
+    background: rgba(46, 204, 113, 1);
+}
+
+.delete-image {
+    background: rgba(255, 68, 68, 0.9);
 }
 
 .delete-image:hover {
     transform: scale(1.1);
+    background: rgba(255, 0, 0, 1);
 }
 
-.gallery-upload-section {
-    margin-top: 20px;
-}
-
-.upload-btn {
-    display: inline-flex;
+/* Caption Modal Styles */
+.caption-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    justify-content: center;
+}
+
+.caption-modal.active {
+    display: flex;
+}
+
+.caption-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.caption-modal-content textarea {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid rgba(118, 75, 162, 0.2);
     border-radius: 4px;
+    resize: vertical;
+}
+
+.caption-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.caption-modal-actions button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.upload-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.upload-btn i {
-    font-size: 1.2em;
-}
-
-.upload-progress-container {
-    margin-top: 15px;
-    width: 100%;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background-color: #4CAF50;
-    transition: width 0.3s ease;
-}
-
-.progress-text {
-    margin-top: 5px;
-    text-align: center;
-    font-size: 14px;
-    color: #666;
-}
-
-.upload-wrapper {
-    margin-bottom: 15px;
-}
-
-.text-muted {
-    display: block;
-    margin-top: 5px;
-    color: #666;
-}
-
-.gallery-notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 25px;
-    border-radius: 4px;
-    background: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: none;
-    animation: slideIn 0.3s ease;
-}
-
-.gallery-notification.success {
+.caption-modal-actions .save-caption {
     background: #4CAF50;
     color: white;
 }
 
-.gallery-notification.error {
+.caption-modal-actions .cancel-caption {
     background: #f44336;
     color: white;
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
+.image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 14px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.gallery-item.dragging {
+    opacity: 0.7;
+    cursor: move;
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    width: 250px;
+}
+
+.gallery-item.drag-over {
+    border: 2px dashed #4CAF50;
+}
+
+#banner {
+    background: url('{{ $portfolio->banner_image ? asset("storage/" . $portfolio->banner_image) : asset("templates/modern/images/banner-images/banner-image-1.jpg") }}') no-repeat center top;
+    background-size: cover;
+}
+
+@media (max-width: 1200px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
-    to {
-        transform: translateX(0);
-        opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
     }
 }
 </style>
 
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('galleryUploadForm');
@@ -640,6 +732,278 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    const masonryLayout = () => {
+        const grid = document.querySelector('.gallery-grid');
+        const items = document.querySelectorAll('.gallery-item');
+        const rowHeight = 10;
+        let columns = 3;
+
+        // Determine number of columns based on viewport width
+        if (window.innerWidth <= 480) columns = 1;
+        else if (window.innerWidth <= 768) columns = 2;
+        else if (window.innerWidth <= 1200) columns = 3;
+        else columns = 4;
+
+        // Reset grid
+        grid.style.gridTemplateRows = 'masonry';
+        grid.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+
+        // Adjust item heights
+        items.forEach(item => {
+            const img = item.querySelector('img');
+            if (img.complete) {
+                const height = img.getBoundingClientRect().height;
+                item.style.gridRowEnd = `span ${Math.ceil(height / rowHeight)}`;
+            } else {
+                img.addEventListener('load', () => {
+                    const height = img.getBoundingClientRect().height;
+                    item.style.gridRowEnd = `span ${Math.ceil(height / rowHeight)}`;
+                });
+            }
+        });
+    };
+
+    // Initial layout
+    masonryLayout();
+
+    // Update layout on window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(masonryLayout, 250);
+    });
+
+    // Update layout when images load
+    const images = document.querySelectorAll('.gallery-item img');
+    images.forEach(img => {
+        if (!img.complete) {
+            img.addEventListener('load', masonryLayout);
+        }
+    });
+
+    // Caption functionality
+    const captionButtons = document.querySelectorAll('.caption-image');
+    captionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const imageId = this.dataset.imageId;
+            showCaptionModal(imageId);
+        });
+    });
+
+    // Improved drag and drop functionality
+    const galleryGrid = document.querySelector('.gallery-grid');
+    let draggedItem = null;
+    let draggedItemRect = null;
+    let mouseOffset = { x: 0, y: 0 };
+
+    document.querySelectorAll('.move-image').forEach(handle => {
+        const galleryItem = handle.closest('.gallery-item');
+        
+        handle.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            draggedItem = galleryItem;
+            draggedItemRect = draggedItem.getBoundingClientRect();
+            
+            // Calculate mouse offset relative to item
+            mouseOffset.x = e.clientX - draggedItemRect.left;
+            mouseOffset.y = e.clientY - draggedItemRect.top;
+            
+            // Create ghost image
+            draggedItem.classList.add('dragging');
+            
+            // Update dragged item position
+            updateDraggedPosition(e);
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+    });
+
+    function updateDraggedPosition(e) {
+        if (!draggedItem) return;
+        
+        const x = e.clientX - mouseOffset.x;
+        const y = e.clientY - mouseOffset.y;
+        
+        draggedItem.style.left = x + 'px';
+        draggedItem.style.top = y + 'px';
+    }
+
+    function onMouseMove(e) {
+        if (!draggedItem) return;
+        
+        updateDraggedPosition(e);
+        
+        const items = [...galleryGrid.querySelectorAll('.gallery-item:not(.dragging)')];
+        
+        // Remove previous drag-over class
+        items.forEach(item => item.classList.remove('drag-over'));
+        
+        // Find the closest item
+        const closestItem = items.reduce((closest, item) => {
+            const rect = item.getBoundingClientRect();
+            const offset = e.clientY - (rect.top + rect.height / 2);
+            
+            if (closest.offset === null || Math.abs(offset) < Math.abs(closest.offset)) {
+                return { element: item, offset: offset };
+            }
+            return closest;
+        }, { element: null, offset: null });
+        
+        if (closestItem.element) {
+            closestItem.element.classList.add('drag-over');
+        }
+    }
+
+    function onMouseUp(e) {
+        if (!draggedItem) return;
+        
+        const items = [...galleryGrid.querySelectorAll('.gallery-item:not(.dragging)')];
+        const closestItem = items.reduce((closest, item) => {
+            const rect = item.getBoundingClientRect();
+            const offset = e.clientY - (rect.top + rect.height / 2);
+            
+            if (closest.offset === null || Math.abs(offset) < Math.abs(closest.offset)) {
+                return { element: item, offset: offset };
+            }
+            return closest;
+        }, { element: null, offset: null });
+        
+        if (closestItem.element) {
+            closestItem.element.classList.remove('drag-over');
+            galleryGrid.insertBefore(draggedItem, 
+                closestItem.offset > 0 ? closestItem.element.nextSibling : closestItem.element);
+            
+            // Reset dragged item styles
+            draggedItem.classList.remove('dragging');
+            draggedItem.style.left = '';
+            draggedItem.style.top = '';
+            
+            // Save the new order
+            saveGalleryOrder();
+        }
+        
+        draggedItem = null;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    function showCaptionModal(imageId) {
+        let modal = document.querySelector('.caption-modal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.className = 'caption-modal';
+            modal.innerHTML = `
+                <div class="caption-modal-content">
+                    <h3>Edit Image Caption</h3>
+                    <textarea placeholder="Enter caption here..." id="caption-textarea"></textarea>
+                    <div class="caption-modal-actions">
+                        <button class="save-caption">Save</button>
+                        <button class="cancel-caption">Cancel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Fetch existing caption
+        fetch(`/portfolio/gallery/${imageId}/caption`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.caption) {
+                    modal.querySelector('#caption-textarea').value = data.caption;
+                }
+            });
+
+        modal.classList.add('active');
+
+        // Handle save
+        modal.querySelector('.save-caption').addEventListener('click', () => {
+            const caption = modal.querySelector('#caption-textarea').value;
+            saveImageCaption(imageId, caption);
+            modal.classList.remove('active');
+        });
+
+        // Handle cancel
+        modal.querySelector('.cancel-caption').addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // Close on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    }
+
+    function saveImageCaption(imageId, caption) {
+        fetch(`/portfolio/gallery/${imageId}/caption`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ caption })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const galleryItem = document.querySelector(`.gallery-item [data-image-id="${imageId}"]`).closest('.gallery-item');
+                let captionElement = galleryItem.querySelector('.image-caption');
+                
+                if (caption) {
+                    if (!captionElement) {
+                        captionElement = document.createElement('div');
+                        captionElement.className = 'image-caption';
+                        galleryItem.querySelector('.gallery-item-overlay').appendChild(captionElement);
+                    }
+                    captionElement.textContent = caption;
+                } else if (captionElement) {
+                    captionElement.remove();
+                }
+                
+                showNotification('Caption saved successfully');
+            } else {
+                showNotification('Failed to save caption', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Failed to save caption', 'error');
+        });
+    }
+
+    function saveGalleryOrder() {
+        const items = [...document.querySelectorAll('.gallery-item')];
+        const order = items.map(item => {
+            const button = item.querySelector('.action-btn');
+            return button ? button.dataset.imageId : null;
+        }).filter(id => id);
+
+        fetch('/portfolio/gallery/reorder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ order })
+        })
+        .catch(error => console.error('Error saving order:', error));
+    }
 });
 </script>
+
+@media screen and (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
 @endsection
