@@ -30,16 +30,32 @@
             </div>
         </div>
     </div>
-
+    
+    <!-- Session Status Messages -->
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+    
+    @if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+        <i class="fa-solid fa-circle-exclamation"></i> {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+    
+    <!-- Profile Tabs -->
     <ul class="nav nav-tabs" id="profileTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-content" type="button" role="tab" aria-controls="profile-content" aria-selected="true">
-                <i class="fa-solid fa-user"></i> Profile
+                <i class="fa-solid fa-user"></i> Personal Info
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password-content" type="button" role="tab" aria-controls="password-content" aria-selected="false">
-                <i class="fa-solid fa-lock"></i> Security
+            <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security-content" type="button" role="tab" aria-controls="security-content" aria-selected="false">
+                <i class="fa-solid fa-shield-halved"></i> Security
             </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -48,7 +64,7 @@
             </button>
         </li>
     </ul>
-
+    
     <div class="tab-content" id="profileTabsContent">
         <!-- Profile Tab -->
         <div class="tab-pane fade show active" id="profile-content" role="tabpanel" aria-labelledby="profile-tab">
@@ -97,7 +113,7 @@
                             
                             <div class="form-group">
                                 <label for="location" class="form-label">Location</label>
-                                <input type="text" id="location" name="location" class="form-control @error('location') is-invalid @enderror" value="{{ old('location', $user->location) }}" placeholder="e.g., New York, USA">
+                                <input type="text" id="location" name="location" class="form-control @error('location') is-invalid @enderror" value="{{ old('location', $user->location) }}" placeholder="City, Country">
                                 @error('location')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -105,7 +121,7 @@
                             
                             <div class="form-group">
                                 <label for="website" class="form-label">Website</label>
-                                <input type="url" id="website" name="website" class="form-control @error('website') is-invalid @enderror" value="{{ old('website', $user->website) }}" placeholder="https://yourwebsite.com">
+                                <input type="url" id="website" name="website" class="form-control @error('website') is-invalid @enderror" value="{{ old('website', $user->website) }}" placeholder="https://...">
                                 @error('website')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -113,15 +129,15 @@
                             
                             <div class="form-group">
                                 <label for="bio" class="form-label">Bio</label>
-                                <textarea id="bio" name="bio" class="form-control @error('bio') is-invalid @enderror" rows="4" placeholder="Tell us a bit about yourself">{{ old('bio', $user->bio) }}</textarea>
+                                <textarea id="bio" name="bio" class="form-control @error('bio') is-invalid @enderror" rows="4">{{ old('bio', $user->bio) }}</textarea>
                                 @error('bio')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             
-                            <div class="text-end mt-4">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <button type="submit" class="btn btn-update">
-                                    <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                                    <i class="fa-solid fa-save"></i> Update Profile
                                 </button>
                             </div>
                         </div>
@@ -130,52 +146,52 @@
             </div>
         </div>
         
-        <!-- Password Tab -->
-        <div class="tab-pane fade" id="password-content" role="tabpanel" aria-labelledby="password-tab">
+        <!-- Security Tab -->
+        <div class="tab-pane fade" id="security-content" role="tabpanel" aria-labelledby="security-tab">
             <div class="profile-card">
-                <h2 class="profile-card-title"><i class="fa-solid fa-lock"></i> Change Password</h2>
-                
+                <h2 class="profile-card-title"><i class="fa-solid fa-key"></i> Update Password</h2>
                 <form id="password-form" action="{{ route('profile.password.update') }}" method="POST">
                     @csrf
+                    @method('PATCH')
                     
-                    <div class="form-group position-relative">
+                    <div class="form-group">
                         <label for="current_password" class="form-label">Current Password</label>
                         <div class="input-group">
                             <input type="password" id="current_password" name="current_password" class="form-control @error('current_password') is-invalid @enderror" required>
-                            <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#current_password">
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#current_password">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
+                            @error('current_password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        @error('current_password')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
                     </div>
                     
-                    <div class="form-group position-relative">
+                    <div class="form-group">
                         <label for="password" class="form-label">New Password</label>
                         <div class="input-group">
                             <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
-                            <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#password">
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#password">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <div id="password-strength" class="password-strength mt-2"></div>
-                        @error('password')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
+                        <div id="password-strength" class="password-strength"></div>
                     </div>
                     
-                    <div class="form-group position-relative">
+                    <div class="form-group">
                         <label for="password_confirmation" class="form-label">Confirm New Password</label>
                         <div class="input-group">
                             <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
-                            <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#password_confirmation">
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#password_confirmation">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
                         </div>
                     </div>
                     
-                    <div class="text-end mt-4">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                         <button type="submit" class="btn btn-update">
                             <i class="fa-solid fa-key"></i> Update Password
                         </button>
@@ -184,27 +200,24 @@
             </div>
             
             <div class="profile-card mt-4">
-                <h2 class="profile-card-title text-danger"><i class="fa-solid fa-circle-exclamation"></i> Danger Zone</h2>
+                <h2 class="profile-card-title text-danger"><i class="fa-solid fa-exclamation-triangle"></i> Danger Zone</h2>
+                <p>Once you delete your account, all of your portfolios and data will be permanently deleted. This action cannot be undone.</p>
                 
-                <div class="alert alert-warning">
-                    <i class="fa-solid fa-triangle-exclamation"></i> Deleting your account is permanent and cannot be undone. All your data, including portfolios, will be permanently removed.
-                </div>
-                
-                <form action="{{ route('profile.destroy') }}" method="POST">
+                <form method="POST" action="{{ route('profile.destroy') }}">
                     @csrf
                     @method('DELETE')
                     
                     <div class="form-group">
-                        <label for="delete_password" class="form-label">Enter Your Password to Confirm</label>
+                        <label for="delete_password" class="form-label">Confirm your password to delete account</label>
                         <input type="password" id="delete_password" name="password" class="form-control @error('password', 'userDeletion') is-invalid @enderror" required>
                         @error('password', 'userDeletion')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     
-                    <div class="text-end mt-4">
-                        <button type="submit" id="delete-account-btn" class="btn btn-delete">
-                            <i class="fa-solid fa-user-slash"></i> Delete Account
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-delete" id="delete-account-btn">
+                            <i class="fa-solid fa-trash"></i> Delete Account
                         </button>
                     </div>
                 </form>
@@ -214,21 +227,26 @@
         <!-- Portfolios Tab -->
         <div class="tab-pane fade" id="portfolios-content" role="tabpanel" aria-labelledby="portfolios-tab">
             <div class="profile-card">
-                <h2 class="profile-card-title"><i class="fa-solid fa-briefcase"></i> Your Portfolios</h2>
+                <h2 class="profile-card-title">
+                    <i class="fa-solid fa-briefcase"></i> Your Portfolios
+                    <a href="{{ route('portfolios.create') }}" class="btn btn-sm btn-update float-end">
+                        <i class="fa-solid fa-plus"></i> Create New Portfolio
+                    </a>
+                </h2>
                 
                 @if($portfolios->count() > 0)
                     <ul class="portfolio-list">
                         @foreach($portfolios as $portfolio)
                             <li class="portfolio-item">
                                 <div>
-                                    <h4 class="portfolio-item-title">{{ $portfolio->full_name }}</h4>
-                                    <p class="portfolio-item-date">Created {{ $portfolio->created_at->diffForHumans() }}</p>
+                                    <div class="portfolio-item-title">{{ $portfolio->title }}</div>
+                                    <div class="portfolio-item-date">Created {{ $portfolio->created_at->diffForHumans() }}</div>
                                 </div>
                                 <div class="portfolio-item-actions">
-                                    <a href="{{ route('portfolios.show', $portfolio) }}" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('portfolios.show', $portfolio) }}" class="btn btn-sm btn-update">
                                         <i class="fa-solid fa-eye"></i> View
                                     </a>
-                                    <a href="{{ route('portfolios.edit', $portfolio) }}" class="btn btn-sm btn-secondary">
+                                    <a href="{{ route('portfolios.edit', $portfolio) }}" class="btn btn-sm btn-update">
                                         <i class="fa-solid fa-pencil"></i> Edit
                                     </a>
                                 </div>
@@ -237,40 +255,23 @@
                     </ul>
                 @else
                     <div class="text-center py-5">
-                        <i class="fa-solid fa-folder-open fa-4x mb-3 text-muted"></i>
-                        <h3>No Portfolios Yet</h3>
-                        <p>Create your first portfolio to showcase your work and skills.</p>
+                        <i class="fa-solid fa-briefcase fa-3x mb-3 text-muted"></i>
+                        <p class="mb-4">You haven't created any portfolios yet</p>
+                        <a href="{{ route('portfolios.create') }}" class="btn btn-update">
+                            <i class="fa-solid fa-plus"></i> Create Your First Portfolio
+                        </a>
                     </div>
                 @endif
-                
-                <div class="text-center mt-4">
-                    <a href="{{ route('portfolios.create') }}" class="btn btn-update">
-                        <i class="fa-solid fa-plus"></i> Create New Portfolio
-                    </a>
-                </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endpush
 
 @push('scripts')
-<link href="{{ asset('css/profile.css') }}" rel="stylesheet">
-<script src="{{ asset('js/profile.js') }}"></script>
-
-<style>
-/* Password strength styles */
-.password-strength {
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 2px 10px;
-    border-radius: 20px;
-    display: inline-block;
-}
-.very-weak { color: #e74c3c; }
-.weak { color: #e67e22; }
-.medium { color: #f39c12; }
-.strong { color: #27ae60; }
-.very-strong { color: #2ecc71; }
-</style>
-@endpush 
+    <script src="{{ asset('js/profile.js') }}"></script>
+@endpush
+@endsection 

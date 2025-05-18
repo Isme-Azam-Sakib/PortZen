@@ -7,7 +7,7 @@
         <nav>
             <ul class="nav">
                 <li class="nav-item"><a class="nav-link text-light" href="{{ route('home') }}"><i class="fa-solid fa-house"></i> Home</a></li>
-                <li class="nav-item"><a class="nav-link text-light" href="{{ route('templates') }}"><i class="fa-solid fa-palette"></i> Templates</a></li>
+                <!-- <li class="nav-item"><a class="nav-link text-light" href="{{ route('templates') }}"><i class="fa-solid fa-palette"></i> Templates</a></li> -->
                 <li class="nav-item"><a class="nav-link text-light" href="{{ route('about') }}"><i class="fa-solid fa-circle-info"></i> About</a></li>
                 <li class="nav-item"><a class="nav-link text-light" href="{{ route('contact') }}"><i class="fa-solid fa-envelope"></i> Contact</a></li>
                 @guest

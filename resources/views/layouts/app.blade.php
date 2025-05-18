@@ -17,6 +17,8 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
+    @stack('styles')
 </head>
 <body>
     @include('layouts.header')
