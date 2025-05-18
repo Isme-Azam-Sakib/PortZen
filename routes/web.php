@@ -40,6 +40,9 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
+        // Get the authenticated user with eager loaded portfolios and their templates
+        $user = auth()->user();
+        
         return view('dashboard');
     })->name('dashboard');
 

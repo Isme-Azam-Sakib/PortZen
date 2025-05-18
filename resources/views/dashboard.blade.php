@@ -84,9 +84,9 @@
                                 <div class="col-md-4 mb-4">
                                     <div class="card">
                                         <div class="card-body">
-                                            <img src="{{ asset('images/templates/ellesi1.png') }}" 
-                                                     alt="{{ $portfolio->title }}" 
-                                                     class="img-fluid mb-3">
+                                            <img src="{{ asset('images/templates/modern.png') }}" 
+                                                 alt="{{ $portfolio->title }}" 
+                                                 class="img-fluid mb-3">
                                             <h5 class="card-title">{{ $portfolio->title }}</h5>
                                             <p class="text-muted">Created: {{ $portfolio->created_at->format('M d, Y') }}</p>
                                             <div class="portfolio-actions">

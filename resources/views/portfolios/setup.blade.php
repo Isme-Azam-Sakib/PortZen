@@ -246,10 +246,9 @@
 </template>
 
 @push('scripts')
+<script src="{{ asset('js/portfolio-setup.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Existing portfolio-setup.js functionality
-    
     // Work Experience Section Toggle
     const showWorkExperience = document.getElementById('show_work_experience');
     const workExperienceSection = document.getElementById('work_experience_section');

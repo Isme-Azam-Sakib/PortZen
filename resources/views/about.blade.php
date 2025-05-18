@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="intro-image fade-in-delay">
-                        <img src="{{ asset('images/about-intro.jpg') }}" alt="PortZen Dashboard" class="img-fluid rounded shadow">
+                        <img src="{{ asset('images/templates/about.png') }}" alt="PortZen Dashboard" class="img-fluid rounded shadow">
                     </div>
                 </div>
             </div>
@@ -99,38 +99,7 @@
             <h2 class="section-title text-center">Meet Our Team</h2>
             
             <div class="row">
-                <div class="col-md-4">
-                    <div class="team-card">
-                        <div class="team-image">
-                            <img src="{{ asset('images/team-placeholder.jpg') }}" alt="Team Member" class="img-fluid">
-                        </div>
-                        <h3>Jane Doe</h3>
-                        <p class="position">Founder & CEO</p>
-                        <p class="bio">Jane brings over 10 years of experience in design and product development.</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="team-card">
-                        <div class="team-image">
-                            <img src="{{ asset('images/team-placeholder.jpg') }}" alt="Team Member" class="img-fluid">
-                        </div>
-                        <h3>John Smith</h3>
-                        <p class="position">Lead Developer</p>
-                        <p class="bio">John is a full-stack developer with a passion for creating seamless user experiences.</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="team-card">
-                        <div class="team-image">
-                            <img src="{{ asset('images/team-placeholder.jpg') }}" alt="Team Member" class="img-fluid">
-                        </div>
-                        <h3>Emily Chen</h3>
-                        <p class="position">Design Director</p>
-                        <p class="bio">Emily oversees the design and aesthetics of all PortZen templates and features.</p>
-                    </div>
-                </div>
+                                <div class="col-md-4">                    <div class="team-card">                        <div class="team-image">                            <img src="{{ asset('images/team-placeholder.jpg') }}" alt="Isme Azam Sakib" class="img-fluid">                        </div>                        <h3>Isme Azam Sakib</h3>                        <p class="position">Founder & Lead Developer</p>                        <p class="bio">Sakib leads the development of PortZen, bringing innovative solutions to portfolio creation.</p>                    </div>                </div>                                <div class="col-md-4">                    <div class="team-card">                        <div class="team-image">                            <img src="{{ asset('images/team-placeholder.jpg') }}" alt="Tasabil Islam Mojumder" class="img-fluid">                        </div>                        <h3>Tasabil Islam Mojumder</h3>                        <p class="position">UI/UX Designer</p>                        <p class="bio">Tasabil crafts beautiful and intuitive user experiences that make PortZen stand out.</p>                    </div>                </div>                                <div class="col-md-4">                    <div class="team-card">                        <div class="team-image">                            <img src="{{ asset('images/team-placeholder.jpg') }}" alt="Mohammad Hasibul Hasan" class="img-fluid">                        </div>                        <h3>Mohammad Hasibul Hasan</h3>                        <p class="position">Database Expert</p>                        <p class="bio">Hasib ensures robust and efficient data management across the platform.</p>                    </div>                </div>                                <div class="col-md-4">                    <div class="team-card">                        <div class="team-image">                            <img src="{{ asset('images/team-placeholder.jpg') }}" alt="Shohayel Ahmed" class="img-fluid">                        </div>                        <h3>Shohayel Ahmed</h3>                        <p class="position">Test Engineer</p>                        <p class="bio">Shohayel maintains the highest quality standards through comprehensive testing.</p>                    </div>                </div>                                <div class="col-md-4">                    <div class="team-card">                        <div class="team-image">                            <img src="{{ asset('images/team-placeholder.jpg') }}" alt="Imam Hossain" class="img-fluid">                        </div>                        <h3>Imam Hossain</h3>                        <p class="position">Researcher</p>                        <p class="bio">Imam explores new technologies and trends to keep PortZen at the cutting edge.</p>                    </div>                </div>
             </div>
         </div>
         

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Ensure these CSS and JS files are loaded for the profile page -->
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endpush
+
 <div class="profile-container container">
     <div class="profile-header">
         <div class="row align-items-center">
@@ -267,11 +272,7 @@
     </div>
 </div>
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-@endpush
-
 @push('scripts')
-    <script src="{{ asset('js/profile.js') }}"></script>
+<script src="{{ asset('js/profile.js') }}"></script>
 @endpush
 @endsection 

@@ -19,7 +19,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fa-solid fa-user-pen"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile.index') }}"><i class="fa-solid fa-user-pen"></i> Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
