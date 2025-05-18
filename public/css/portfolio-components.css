@@ -1,0 +1,647 @@
+/* Contact Section Styles */
+.contact-info {
+    margin: 20px 0;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 5px 0;
+}
+
+.contact-item i {
+    margin-right: 10px;
+    color: #764ba2;
+    width: 25px;
+}
+
+.contact-item p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.social-links {
+    margin-top: 30px;
+}
+
+.social-icon {
+    display: inline-block;
+    margin-right: 15px;
+    color: #764ba2;
+    transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+    transform: translateY(-3px);
+}
+
+.contact-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.form-col-full {
+    width: 100%;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: 2px solid rgba(118, 75, 162, 0.2);
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.contact-form textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.contact-form button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: auto;
+    display: inline-block;
+}
+
+.contact-form button:hover {
+    transform: translateY(-2px);
+}
+
+/* Form Status Messages */
+#form-status {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.text-success {
+    color: #28a745;
+}
+
+.text-danger {
+    color: #dc3545;
+}
+
+.success-message {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid #28a745;
+    padding: 10px 15px;
+    border-radius: 0 4px 4px 0;
+}
+
+.error-message {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left: 4px solid #dc3545;
+    padding: 10px 15px;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Gallery Styles */
+.gallery-header {
+    position: relative;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.gallery-upload-section {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.section-title:hover+.gallery-upload-section,
+.gallery-upload-section:hover {
+    opacity: 1;
+}
+
+.gallery-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    min-height: 100px;
+}
+
+.gallery-item {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: fit-content;
+    line-height: 0;
+    break-inside: avoid;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.gallery-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.gallery-item:hover .gallery-item-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.gallery-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn {
+    position: relative;
+    z-index: 2;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+}
+
+.action-btn i {
+    font-size: 1.2em;
+}
+
+.caption-image {
+    background: rgba(52, 152, 219, 0.9);
+}
+
+.caption-image:hover {
+    transform: scale(1.1);
+    background: rgba(52, 152, 219, 1);
+}
+
+.move-image {
+    background: rgba(46, 204, 113, 0.9);
+    cursor: move;
+}
+
+.move-image:hover {
+    transform: scale(1.1);
+    background: rgba(46, 204, 113, 1);
+}
+
+.delete-image {
+    background: rgba(255, 68, 68, 0.9);
+}
+
+.delete-image:hover {
+    transform: scale(1.1);
+    background: rgba(255, 0, 0, 1);
+}
+
+/* Caption Modal Styles */
+.caption-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.caption-modal.active {
+    display: flex;
+}
+
+.caption-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.caption-modal-content textarea {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid rgba(118, 75, 162, 0.2);
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.caption-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.caption-modal-actions button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.caption-modal-actions .save-caption {
+    background: #4CAF50;
+    color: white;
+}
+
+.caption-modal-actions .cancel-caption {
+    background: #f44336;
+    color: white;
+}
+
+.image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 14px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.gallery-item.dragging {
+    opacity: 0.7;
+    cursor: move;
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    width: 250px;
+}
+
+.gallery-item.drag-over {
+    border: 2px dashed #4CAF50;
+}
+
+/* Responsive Gallery */
+@media (max-width: 1200px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Editable Elements */
+.editable-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.editable-element {
+    position: relative;
+    padding: 5px;
+    border: 2px dashed transparent;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.editable-element:hover {
+    border-color: rgba(118, 75, 162, 0.3);
+    cursor: pointer;
+}
+
+.edit-overlay {
+    position: absolute;
+    top: 5px;
+    right: -30px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.editable-container:hover .edit-overlay {
+    opacity: 1;
+}
+
+.edit-button {
+    background: #764ba2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+.edit-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.editable-field-active {
+    border: 2px dashed #764ba2;
+    background: rgba(118, 75, 162, 0.05);
+}
+
+.edit-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.edit-save,
+.edit-cancel {
+    padding: 3px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.edit-save {
+    background: #4CAF50;
+    color: white;
+}
+
+.edit-cancel {
+    background: #f44336;
+    color: white;
+}
+
+.edit-save:hover,
+.edit-cancel:hover {
+    transform: scale(1.05);
+}
+
+.edit-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.edit-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    resize: vertical;
+}
+
+/* Color Picker */
+.color-picker-button {
+    background: #9c27b0;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    margin-left: 5px;
+}
+
+.color-picker-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.color-picker-container {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 100;
+    display: none;
+}
+
+.color-picker-container.active {
+    display: block;
+}
+
+.color-samples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.color-sample {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s;
+}
+
+.color-sample:hover {
+    transform: scale(1.2);
+}
+
+.color-sample.selected {
+    border-color: #000;
+}
+
+.custom-color-container {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-picker-custom {
+    margin-top: 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Skill Edit Modal */
+.skill-edit-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.skill-edit-modal.active {
+    display: flex;
+}
+
+.skill-edit-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.skill-edit-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid rgba(118, 75, 162, 0.2);
+    border-radius: 4px;
+}
+
+.skill-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.skill-edit-actions button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.skill-edit-actions .save-skill {
+    background: #4CAF50;
+    color: white;
+}
+
+.skill-edit-actions .cancel-skill {
+    background: #f44336;
+    color: white;
+}
+
+/* Other Form Elements */
+#skillEditInput {
+    width: 100%;
+    padding: 8px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Banner Edit Button */
+.banner-edit-button {
+    position: absolute !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 9999 !important; /* Very high z-index to ensure it's on top */
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: none !important;
+    pointer-events: auto !important; /* Ensure clicks are registered */
+}
+
+/* Always show the banner button, not just on hover */
+#banner .banner-edit-button {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.banner-edit-button button {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(4px);
+}
+
+.banner-edit-button button:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: translateY(-2px);
+}
+
+.banner-edit-button button i {
+    font-size: 16px;
+} 

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\GalleryImage;
+use App\Models\Portfolio;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class GalleryController extends Controller
 {
@@ -29,7 +33,7 @@ class GalleryController extends Controller
             ]);
 
             // Get authenticated user's portfolio
-            $portfolio = auth()->user()->portfolio;
+            $portfolio = Portfolio::where('user_id', auth()->id())->first();
             
             if (!$portfolio) {
                 Log::error('No portfolio found for user', ['user_id' => auth()->id()]);
@@ -39,8 +43,34 @@ class GalleryController extends Controller
                 ], 404);
             }
 
-            // Check image count
-            $currentCount = $portfolio->galleryImages()->count();
+            Log::info('Found portfolio', ['portfolio_id' => $portfolio->id]);
+
+            // Verify we can see gallery images table
+            try {
+                $existingCount = DB::table('gallery_images')->where('portfolio_id', $portfolio->id)->count();
+                Log::info('Existing gallery images', ['count' => $existingCount]);
+            } catch (\Exception $e) {
+                Log::error('Error checking existing gallery images', ['error' => $e->getMessage()]);
+            }
+
+            // Check if gallery_images table exists
+            if (!Schema::hasTable('gallery_images')) {
+                // Create gallery_images table if it doesn't exist
+                Schema::create('gallery_images', function (Blueprint $table) {
+                    $table->id();
+                    $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
+                    $table->string('image_path');
+                    $table->text('caption')->nullable();
+                    $table->integer('sort_order')->default(0);
+                    $table->timestamps();
+                });
+                Log::info('Created gallery_images table');
+            }
+
+            // Count existing images using direct query
+            $currentCount = DB::table('gallery_images')->where('portfolio_id', $portfolio->id)->count();
+            Log::info('Current gallery image count', ['count' => $currentCount]);
+            
             $newImagesCount = count($request->file('images'));
             
             if ($currentCount + $newImagesCount > 30) {
@@ -70,23 +100,37 @@ class GalleryController extends Controller
                         continue;
                     }
 
-                    // Create gallery image record
-                    $galleryImage = $portfolio->galleryImages()->create([
+                    Log::info('Image stored at path', ['path' => $path]);
+
+                    // Create gallery image directly with DB query builder to avoid potential model issues
+                    $imageId = DB::table('gallery_images')->insertGetId([
+                        'portfolio_id' => $portfolio->id,
                         'image_path' => $path,
-                        'sort_order' => $currentCount + count($uploadedImages)
+                        'sort_order' => $currentCount + count($uploadedImages),
+                        'created_at' => now(),
+                        'updated_at' => now()
                     ]);
 
-                    $uploadedImages[] = $galleryImage;
+                    if (!$imageId) {
+                        Log::error('Failed to insert gallery image record', [
+                            'portfolio_id' => $portfolio->id,
+                            'path' => $path
+                        ]);
+                        continue;
+                    }
+
+                    Log::info('Image record created', ['image_id' => $imageId, 'portfolio_id' => $portfolio->id]);
+
+                    $uploadedImages[] = [
+                        'id' => $imageId,
+                        'image_path' => $path
+                    ];
                     
-                    Log::info('Image uploaded successfully', [
-                        'user_id' => auth()->id(),
-                        'image_id' => $galleryImage->id,
-                        'path' => $path
-                    ]);
                 } catch (\Exception $e) {
                     Log::error('Failed to process image', [
                         'user_id' => auth()->id(),
                         'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
                         'original_name' => $image->getClientOriginalName()
                     ]);
                     // If we failed to upload this image, continue with others
@@ -101,9 +145,13 @@ class GalleryController extends Controller
                 ], 500);
             }
 
+            // Verify images were added
+            $afterCount = DB::table('gallery_images')->where('portfolio_id', $portfolio->id)->count();
             Log::info('Gallery upload completed', [
                 'user_id' => auth()->id(),
-                'uploaded_count' => count($uploadedImages)
+                'uploaded_count' => count($uploadedImages),
+                'before_count' => $currentCount,
+                'after_count' => $afterCount
             ]);
 
             return response()->json([
@@ -174,6 +222,106 @@ class GalleryController extends Controller
                 'success' => false,
                 'message' => 'Failed to delete image'
             ], 500);
+        }
+    }
+    
+    /**
+     * Get image caption
+     */
+    public function getCaption(GalleryImage $image)
+    {
+        try {
+            if ($image->portfolio->user_id !== auth()->id()) {
+                return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'caption' => $image->caption
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to get caption', [
+                'user_id' => auth()->id(),
+                'image_id' => $image->id,
+                'error' => $e->getMessage()
+            ]);
+            return response()->json(['success' => false, 'message' => 'Error fetching caption'], 500);
+        }
+    }
+    
+    /**
+     * Save image caption
+     */
+    public function saveCaption(Request $request, GalleryImage $image)
+    {
+        try {
+            if ($image->portfolio->user_id !== auth()->id()) {
+                return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            }
+            
+            $validated = $request->validate([
+                'caption' => 'nullable|string|max:255'
+            ]);
+            
+            $image->caption = $validated['caption'];
+            $image->save();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Caption saved successfully',
+                'caption' => $image->caption
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to save caption', [
+                'user_id' => auth()->id(),
+                'image_id' => $image->id,
+                'error' => $e->getMessage()
+            ]);
+            return response()->json(['success' => false, 'message' => 'Error saving caption'], 500);
+        }
+    }
+    
+    /**
+     * Reorder gallery images
+     */
+    public function reorder(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'order' => 'required|array',
+                'order.*' => 'numeric|exists:gallery_images,id'
+            ]);
+            
+            $portfolio = Portfolio::where('user_id', auth()->id())->first();
+            
+            if (!$portfolio) {
+                return response()->json(['success' => false, 'message' => 'Portfolio not found'], 404);
+            }
+            
+            // Get images that belong to the portfolio and are in the order array
+            $images = GalleryImage::whereIn('id', $validated['order'])
+                ->where('portfolio_id', $portfolio->id)
+                ->get()
+                ->keyBy('id');
+            
+            // Update sort_order for each image
+            foreach ($validated['order'] as $index => $imageId) {
+                if (isset($images[$imageId])) {
+                    $images[$imageId]->sort_order = $index;
+                    $images[$imageId]->save();
+                }
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Gallery order updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to reorder gallery', [
+                'user_id' => auth()->id(),
+                'error' => $e->getMessage()
+            ]);
+            return response()->json(['success' => false, 'message' => 'Error reordering gallery'], 500);
         }
     }
 } 

@@ -27,7 +27,8 @@ class Portfolio extends Model
         'phone',
         'website_url',
         'social_links',
-        'is_public'
+        'is_public',
+        'heading_color'
     ];
 
     protected $casts = [
@@ -74,7 +75,7 @@ class Portfolio extends Model
 
     public function galleryImages()
     {
-        return $this->hasMany(GalleryImage::class);
+        return $this->hasMany(GalleryImage::class)->orderBy('sort_order');
     }
 }
 

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
             $table->string('image_path');
             $table->text('caption')->nullable();
-            $table->integer('order')->default(0);
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
         });
     }

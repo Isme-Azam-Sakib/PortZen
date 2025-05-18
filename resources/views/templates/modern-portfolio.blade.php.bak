@@ -1,25 +1,10 @@
 @extends('templates.layouts.modern')
 
-@php
-use Illuminate\Support\Facades\DB;
-@endphp
-
 @section('content')
 <!-- Add meta tag for portfolio ID -->
 <meta name="portfolio-id" content="{{ $portfolio->id }}">
 <!-- Add CSRF token meta tag -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<!-- Add heading color meta tag -->
-<meta name="heading-color" content="{{ $portfolio->heading_color ?? '#ffffff' }}">
-<!-- Add banner image meta tag -->
-<meta name="banner-image" content="{{ $portfolio->banner_image }}">
-
-<!-- Portfolio Experience Styles -->
-<link rel="stylesheet" href="{{ asset('css/portfolio-experience.css') }}">
-<link rel="stylesheet" href="{{ asset('css/portfolio-components.css') }}">
-
-<!-- Dynamic styles are added inline for proper Blade template processing -->
-<!-- Dynamic styles moved to portfolio-dynamics.js -->
 
 <!-- Preloader -->
 <div id="preloader">
@@ -44,8 +29,8 @@ use Illuminate\Support\Facades\DB;
                 <div class="col-1">
                     <!--Logo-->
                     <div id="logo">
-                        <img src="{{ asset('templates/modern/images/logo.png') }}" id="banner-logo" alt="Portfolio" />
-                        <img src="{{ asset('templates/modern/images/logo-2.png') }}" id="navigation-logo" alt="Portfolio" />
+                        <img src="{{ asset('templates/modern/images/logo.png') }}" id="banner-logo" alt="Portfolio"/>
+                        <img src="{{ asset('templates/modern/images/logo-2.png') }}" id="navigation-logo" alt="Portfolio"/>
             </div>
 
                     <aside>
@@ -78,26 +63,13 @@ use Illuminate\Support\Facades\DB;
             </div>
         </div>
 
-        @if(auth()->id() == $portfolio->user_id)
-        <div class="banner-edit-button" style="position: absolute; top: 20px; right: 20px; z-index: 9999; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;">
-            <form id="bannerImageForm" action="{{ route('portfolios.upload-banner', $portfolio->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="file" id="bannerImageInput" name="banner_image" style="display: none;" accept="image/*">
-                <button type="button" id="changeBannerBtn" title="Change Banner Image"
-                        style="background: rgba(0, 0, 0, 0.7); color: white; border: 2px solid white; border-radius: 30px; padding: 8px 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.5); position: relative; z-index: 9999;">
-                    <i class="fa fa-image"></i> Change Banner
-                </button>
-            </form>
-        </div>
-        @endif
-
         <!--Banner Content-->
         <div id="banner-content" class="row clearfix">
             <div class="col-38">
                 <div class="section-heading">
                     @if(auth()->id() == $portfolio->user_id)
                         <div class="editable-container">
-                        <h1 class="editable-element" data-field="full_name" data-type="text">{{ $portfolio->full_name }}</h1>
+                            <h1 class="editable-element" data-field="full_name" data-type="text" style="color: {!! $portfolio->heading_color ?? '#ffffff' !!}">{{ $portfolio->full_name }}</h1>
                             <div class="edit-overlay">
                                 <button class="edit-button" title="Edit Name"><i class="fa fa-pencil"></i></button>
                                 <button class="color-picker-button" title="Change Text Color" data-field="heading_color"><i class="fa fa-paint-brush"></i></button>
@@ -149,7 +121,7 @@ use Illuminate\Support\Facades\DB;
                                     <div class="icon">
                                         <i class="fa fa-code fa-2x"></i>
                                     </div>
-                            <div class="icon-block-description experience-item">
+                                    <div class="icon-block-description">
                                         <h4>{{ $skill }}</h4>
                                         <p>{{ $portfolio->experience_level }}</p>
                                         @if(auth()->id() == $portfolio->user_id)
@@ -201,36 +173,17 @@ use Illuminate\Support\Facades\DB;
                 <div class="col-2-3">
             @foreach($portfolio->workExperiences as $experience)
                         <div class="col-2 icon-block wow fadeInUp">
-                        <div class="icon-block-description experience-item">
+                            <div class="icon-block-description">
                             <h4>{{ $experience->job_title }}</h4>
                                 <h5>{{ $experience->company_name }}</h5>
                             <p class="text-muted">
                                 {{ $experience->start_date->format('M Y') }} - 
-                                {{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : '') }}
+                                {{ $experience->is_current ? 'Present' : $experience->end_date->format('M Y') }}
                             </p>
                             <p>{{ $experience->responsibilities }}</p>
-                            
-                            @if(auth()->id() == $portfolio->user_id)
-                            <div class="experience-actions">
-                                <button class="edit-experience-btn" data-experience-id="{{ $experience->id }}">
-                                    <i class="fa fa-pencil"></i> Edit
-                                </button>
-                                <button class="delete-experience-btn" data-experience-id="{{ $experience->id }}">
-                                    <i class="fa fa-trash"></i> Remove
-                                </button>
-                            </div>
-                            @endif
                     </div>
                 </div>
             @endforeach
-                    
-                    @if(auth()->id() == $portfolio->user_id)
-                    <div class="col-2 icon-block icon-top wow fadeInUp text-center">
-                        <button id="add-experience-btn">
-                            <i class="fa fa-plus"></i> Add New Experience
-                        </button>
-                    </div>
-                    @endif
         </div>
     </div>
 </section>
@@ -249,7 +202,7 @@ use Illuminate\Support\Facades\DB;
                     <div class="col-3 wow fadeInUp">
                         @if($project->images)
                             <div class="gallery-item">
-                        <img src="{{ asset('storage/' . $project->images[0]) }}" alt="{{ $project->name }}" />
+                                <img src="{{ asset('storage/' . $project->images[0]) }}" alt="{{ $project->name }}"/>
                                 <div class="gallery-item-description">
                                     <h4>{{ $project->name }}</h4>
                                     <p>{{ $project->description }}</p>
@@ -293,14 +246,8 @@ use Illuminate\Support\Facades\DB;
                 </div>
 
                 <div class="gallery-container">
-
-
                     <div class="gallery-grid">
-                        @php
-                        $dbGalleryImages = DB::table('gallery_images')->where('portfolio_id', $portfolio->id)->orderBy('sort_order')->get();
-                        @endphp
-
-                        @foreach($dbGalleryImages as $image)
+                        @foreach($portfolio->galleryImages as $image)
                             <div class="gallery-item">
                                 <img src="{{ asset('storage/' . $image->image_path) }}" alt="Gallery Image">
                                 @if(auth()->id() == $portfolio->user_id)
@@ -316,7 +263,7 @@ use Illuminate\Support\Facades\DB;
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
-                                @if(isset($image->caption) && $image->caption)
+                                        @if($image->caption)
                                             <div class="image-caption">{{ $image->caption }}</div>
                                         @endif
                                     </div>
@@ -376,7 +323,7 @@ use Illuminate\Support\Facades\DB;
 
                 <div class="col-2-3">
                     <div class="contact-form wow fadeInUp">
-                        <form id="contactForm" action="{{ route('portfolios.contact', $portfolio->id) }}" method="POST" class="contact-form">
+                        <form action="#" method="POST" class="contact-form">
                             @csrf
                             <div class="form-row">
                                 <div class="form-col">
@@ -399,7 +346,6 @@ use Illuminate\Support\Facades\DB;
                             <div class="form-row">
                                 <div class="form-col-full">
                                     <button type="submit" class="button">Send Message</button>
-                                    <div id="form-status" class="mt-3" style="display: none;"></div>
                                 </div>
                             </div>
                         </form>
@@ -429,7 +375,775 @@ use Illuminate\Support\Facades\DB;
     </footer>
     </div>
 
-<!-- All styles moved to portfolio-components.css -->
+<!-- Contact Section Styles -->
+<style>
+.contact-info {
+    margin: 20px 0;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 5px 0;
+}
+
+.contact-item i {
+    margin-right: 10px;
+    color: #764ba2;
+    width: 25px;
+}
+
+.contact-item p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.social-links {
+    margin-top: 30px;
+}
+
+.social-icon {
+    display: inline-block;
+    margin-right: 15px;
+    color: #764ba2;
+    transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+    transform: translateY(-3px);
+}
+
+.contact-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.form-col-full {
+    width: 100%;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: 2px solid rgba(118, 75, 162, 0.2);
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.contact-form textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.contact-form button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: auto;
+    display: inline-block;
+}
+
+.contact-form button:hover {
+    transform: translateY(-2px);
+}
+
+/* Gallery Styles */
+.gallery-header {
+    position: relative;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.gallery-upload-section {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.section-title:hover + .gallery-upload-section,
+.gallery-upload-section:hover {
+    opacity: 1;
+}
+
+.gallery-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    min-height: 100px;
+}
+
+.gallery-item {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: fit-content;
+    line-height: 0;
+    break-inside: avoid;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.gallery-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.gallery-item:hover .gallery-item-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.gallery-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn {
+    position: relative;
+    z-index: 2;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+}
+
+.action-btn i {
+    font-size: 1.2em;
+}
+
+.caption-image {
+    background: rgba(52, 152, 219, 0.9);
+}
+
+.caption-image:hover {
+    transform: scale(1.1);
+    background: rgba(52, 152, 219, 1);
+}
+
+.move-image {
+    background: rgba(46, 204, 113, 0.9);
+    cursor: move;
+}
+
+.move-image:hover {
+    transform: scale(1.1);
+    background: rgba(46, 204, 113, 1);
+}
+
+.delete-image {
+    background: rgba(255, 68, 68, 0.9);
+}
+
+.delete-image:hover {
+    transform: scale(1.1);
+    background: rgba(255, 0, 0, 1);
+}
+
+/* Caption Modal Styles */
+.caption-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.caption-modal.active {
+    display: flex;
+}
+
+.caption-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.caption-modal-content textarea {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid rgba(118, 75, 162, 0.2);
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.caption-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.caption-modal-actions button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.caption-modal-actions .save-caption {
+    background: #4CAF50;
+    color: white;
+}
+
+.caption-modal-actions .cancel-caption {
+    background: #f44336;
+    color: white;
+}
+
+.image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 14px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.gallery-item.dragging {
+    opacity: 0.7;
+    cursor: move;
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    width: 250px;
+}
+
+.gallery-item.drag-over {
+    border: 2px dashed #4CAF50;
+}
+
+#banner {
+    background: url('{{ $portfolio->banner_image ? asset("storage/" . $portfolio->banner_image) : asset("templates/modern/images/banner-images/banner-image-1.jpg") }}') no-repeat center top;
+    background-size: cover;
+}
+
+@media (max-width: 1200px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Editable Elements */
+.editable-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.editable-element {
+    position: relative;
+    padding: 5px;
+    border: 2px dashed transparent;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.editable-element:hover {
+    border-color: rgba(118, 75, 162, 0.3);
+    cursor: pointer;
+}
+
+.edit-overlay {
+    position: absolute;
+    top: 5px;
+    right: -30px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.editable-container:hover .edit-overlay {
+    opacity: 1;
+}
+
+.edit-button {
+    background: #764ba2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+.edit-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.edit-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.editable-field-active {
+    border: 2px dashed #764ba2;
+    background: rgba(118, 75, 162, 0.05);
+}
+
+.edit-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.edit-save,
+.edit-cancel {
+    padding: 3px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.edit-save {
+    background: #4CAF50;
+    color: white;
+}
+
+.edit-cancel {
+    background: #f44336;
+    color: white;
+}
+
+.edit-save:hover,
+.edit-cancel:hover {
+    transform: scale(1.05);
+}
+
+.edit-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.edit-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    resize: vertical;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: white;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.success {
+    background-color: #4CAF50;
+}
+
+.notification.error {
+    background-color: #f44336;
+}
+
+/* Skill buttons and forms */
+.skill-item {
+    position: relative;
+}
+
+.col-2.icon-block:hover .remove-skill-btn {
+    opacity: 1;
+}
+
+.remove-skill-btn {
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: all 0.2s ease;
+    opacity: 0;
+}
+
+.remove-skill-btn:hover {
+    background: #d32f2f;
+}
+
+.skill-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.icon-block:hover .skill-actions {
+    opacity: 1;
+}
+
+.edit-skill-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-skill-btn:hover {
+    background: #1976D2;
+}
+
+.color-picker-button {
+    background: #9c27b0;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    margin-left: 5px;
+}
+
+.color-picker-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.color-picker-container {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    padding: 10px;
+    z-index: 100;
+    display: none;
+}
+
+.color-picker-container.active {
+    display: block;
+}
+
+.color-sample {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 3px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.color-sample:hover {
+    transform: scale(1.2);
+}
+
+.color-sample.selected {
+    border-color: #000;
+}
+
+.color-picker-custom {
+    margin-top: 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Skill edit modal */
+.skill-edit-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.skill-edit-modal.active {
+    display: flex;
+}
+
+.skill-edit-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.skill-edit-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid rgba(118, 75, 162, 0.2);
+    border-radius: 4px;
+}
+
+.skill-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.skill-edit-actions button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.skill-edit-actions .save-skill {
+    background: #4CAF50;
+    color: white;
+}
+
+.skill-edit-actions .cancel-skill {
+    background: #f44336;
+    color: white;
+}
+
+.add-skill-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.add-skill-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-skill-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-skill-button:hover {
+    background: #388E3C;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-save {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background-color: #388E3C;
+}
+
+.btn-cancel {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background-color: #d32f2f;
+}
+
+.color-samples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.color-sample {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s;
+}
+
+.color-sample:hover {
+    transform: scale(1.2);
+}
+
+.color-sample.selected {
+    border-color: #000;
+}
+
+.custom-color-container {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#skillEditInput {
+    width: 100%;
+    padding: 8px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+</style>
 
 <!-- Color Picker Modal -->
 <div id="colorPickerModal" class="modal">
@@ -481,102 +1195,9 @@ use Illuminate\Support\Facades\DB;
     </div>
 </div>
 
-<!-- Experience Edit Modal -->
-<div id="experienceEditModal" class="modal">
-    <div class="modal-content">
-        <h3>Edit Work Experience</h3>
-        <form id="experienceEditForm">
-            <input type="hidden" id="experienceId">
-            
-            <div class="mb-3">
-                <label for="editJobTitle" class="form-label">Job Title</label>
-                <input type="text" id="editJobTitle" class="form-control" required>
-            </div>
-            
-            <div class="mb-3">
-                <label for="editCompanyName" class="form-label">Company Name</label>
-                <input type="text" id="editCompanyName" class="form-control" required>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="editStartDate" class="form-label">Start Date</label>
-                    <input type="date" id="editStartDate" class="form-control" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="editEndDate" class="form-label">End Date</label>
-                    <input type="date" id="editEndDate" class="form-control">
-                </div>
-            </div>
-            
-            <div class="mb-3 form-check">
-                <input type="checkbox" id="editIsCurrent" class="form-check-input">
-                <label for="editIsCurrent" class="form-check-label">I currently work here</label>
-            </div>
-            
-            <div class="mb-3">
-                <label for="editResponsibilities" class="form-label">Responsibilities</label>
-                <textarea id="editResponsibilities" class="form-control" rows="3"></textarea>
-            </div>
-            
-            <div class="modal-actions">
-                <button type="submit" id="saveExperienceEdit" class="btn-save">Save</button>
-                <button type="button" id="cancelExperienceEdit" class="btn-cancel">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Add Experience Modal -->
-<div id="addExperienceModal" class="modal">
-    <div class="modal-content">
-        <h3>Add Work Experience</h3>
-        <form id="addExperienceForm">
-            <div class="mb-3">
-                <label for="newJobTitle" class="form-label">Job Title</label>
-                <input type="text" id="newJobTitle" class="form-control" required>
-            </div>
-            
-            <div class="mb-3">
-                <label for="newCompanyName" class="form-label">Company Name</label>
-                <input type="text" id="newCompanyName" class="form-control" required>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="newStartDate" class="form-label">Start Date</label>
-                    <input type="date" id="newStartDate" class="form-control" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="newEndDate" class="form-label">End Date</label>
-                    <input type="date" id="newEndDate" class="form-control">
-                </div>
-            </div>
-            
-            <div class="mb-3 form-check">
-                <input type="checkbox" id="newIsCurrent" class="form-check-input">
-                <label for="newIsCurrent" class="form-check-label">I currently work here</label>
-            </div>
-            
-            <div class="mb-3">
-                <label for="newResponsibilities" class="form-label">Responsibilities</label>
-                <textarea id="newResponsibilities" class="form-control" rows="3"></textarea>
-            </div>
-            
-            <div class="modal-actions">
-                <button type="submit" id="saveNewExperience" class="btn-save">Save</button>
-                <button type="button" id="cancelNewExperience" class="btn-cancel">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
-
 <!-- Add external JavaScript dependencies -->
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <!-- Add script tag for the new JavaScript file -->
 <script src="{{ asset('js/portfolio-editor.js') }}"></script>
-<script src="{{ asset('js/portfolio-dynamics.js') }}"></script>
-<!-- Portfolio dynamic scripting moved to portfolio-dynamics.js -->
-</script>
 
 @endsection

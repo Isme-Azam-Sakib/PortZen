@@ -84,15 +84,9 @@
                                 <div class="col-md-4 mb-4">
                                     <div class="card">
                                         <div class="card-body">
-                                            @if($portfolio->template_id)
-                                                <img src="{{ asset('images/templates/ellesi' . $portfolio->template_id . '.png') }}" 
+                                            <img src="{{ asset('images/templates/ellesi1.png') }}" 
                                                      alt="{{ $portfolio->title }}" 
                                                      class="img-fluid mb-3">
-                                            @else
-                                                <img src="{{ asset('storage/' . $portfolio->image) }}" 
-                                                     alt="{{ $portfolio->title }}" 
-                                                     class="img-fluid mb-3">
-                                            @endif
                                             <h5 class="card-title">{{ $portfolio->title }}</h5>
                                             <p class="text-muted">Created: {{ $portfolio->created_at->format('M d, Y') }}</p>
                                             <div class="portfolio-actions">

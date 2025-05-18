@@ -9,6 +9,20 @@ class Template extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'file'];
+    protected $fillable = [
+        'name',
+        'description',
+        'thumbnail',
+        'is_active'
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean'
+    ];
+
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
+    }
 }
 

@@ -24,7 +24,7 @@
                                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
                                             <i class="fa-solid fa-image fa-3x text-muted"></i>
                                         </div>
-                                    @endif
+                                    @endif  
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $template->name }}</h5>
                                         <p class="card-text">{{ $template->description }}</p>

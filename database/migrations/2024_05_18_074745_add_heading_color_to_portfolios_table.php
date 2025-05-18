@@ -8,25 +8,25 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::table('portfolios', function (Blueprint $table) {
-            if (!Schema::hasColumn('portfolios', 'banner_image')) {
-                $table->string('banner_image')->nullable()->after('profile_image');
-            }
+            $table->string('heading_color')->default('#ffffff')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::table('portfolios', function (Blueprint $table) {
-            if (Schema::hasColumn('portfolios', 'banner_image')) {
-                $table->dropColumn('banner_image');
-            }
+            $table->dropColumn('heading_color');
         });
     }
 };

@@ -3,24 +3,21 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Template;
+use Illuminate\Support\Facades\DB;
 
 class TemplateSeeder extends Seeder
 {
     public function run()
     {
-        Template::create([
-            'name' => 'Modern Portfolio',
-            'description' => 'A clean, modern design perfect for developers',
-            'thumbnail' => 'images/templates/ellesi1.png',
-            'file' => 'templates/modern-template.blade.php',
-        ]);
-
-        Template::create([
-            'name' => 'Creative Portfolio',
-            'description' => 'Ideal for designers and artists',
-            'thumbnail' => 'images/templates/ellesi2.png',
-            'file' => 'templates/creative-template.blade.php',
+        DB::table('templates')->insert([
+            [
+                'name' => 'Modern Portfolio',
+                'description' => 'A clean, modern portfolio template.',
+                'thumbnail' => 'images/templates/ellesi1.png',
+                'is_active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
     }
 } 

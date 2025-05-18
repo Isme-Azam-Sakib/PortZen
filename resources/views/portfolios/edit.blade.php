@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    #work_experience_section.hidden {
+        display: none;
+    }
+</style>
+
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -32,21 +38,25 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label">Banner Image</label>
-                            <div class="d-flex align-items-center gap-3">
+                            <label class="form-label fw-bold">Banner Image</label>
+                            <div class="d-flex flex-column">
                                 @if($portfolio->banner_image)
-                                    <div class="position-relative" style="width: 200px;">
+                                    <div class="mb-3 position-relative" style="max-width: 400px;">
                                         <img src="{{ asset('storage/' . $portfolio->banner_image) }}" 
-                                             class="img-fluid rounded" 
+                                             class="img-fluid rounded border" 
                                              alt="Current Banner">
+                                        <div class="position-absolute top-0 end-0 m-2">
+                                            <span class="badge bg-dark">Current Banner</span>
+                                        </div>
                                     </div>
                                 @endif
-                                <div class="flex-grow-1">
+                                
+                                <div class="mb-2">
                                     <input type="file" class="form-control @error('banner_image') is-invalid @enderror" 
                                            id="banner_image" name="banner_image" accept="image/*">
                                     <div class="form-text">Recommended size: 1920x1080px. Max size: 2MB</div>
                                     @error('banner_image')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -212,8 +222,82 @@
                             </div>
                         </div>
 
+                        <!-- Work Experience Section Toggle -->
+                        <div class="mb-4 mt-5">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Work Experience</h5>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="show_work_experience" 
+                                           {{ $portfolio->workExperiences->count() > 0 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="show_work_experience">Show in portfolio</label>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+
+                        <!-- Work Experience Section - Hidden by default if no experiences -->
+                        <div id="work_experience_section" class="{{ $portfolio->workExperiences->count() == 0 ? 'hidden' : '' }} mb-4">
+                            <div id="work_experiences_container">
+                                @foreach($portfolio->workExperiences as $index => $experience)
+                                <div class="work-experience-item card mb-3">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Experience #{{ $index + 1 }}</h6>
+                                        <button type="button" class="btn btn-sm btn-danger remove-experience">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <input type="hidden" name="work_experiences[{{ $index }}][id]" value="{{ $experience->id }}">
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Job Title</label>
+                                            <input type="text" class="form-control" name="work_experiences[{{ $index }}][job_title]" 
+                                                   value="{{ $experience->job_title }}" required>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Company Name</label>
+                                            <input type="text" class="form-control" name="work_experiences[{{ $index }}][company_name]" 
+                                                   value="{{ $experience->company_name }}" required>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Start Date</label>
+                                                <input type="date" class="form-control" name="work_experiences[{{ $index }}][start_date]" 
+                                                       value="{{ $experience->start_date->format('Y-m-d') }}" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">End Date</label>
+                                                <input type="date" class="form-control" name="work_experiences[{{ $index }}][end_date]" 
+                                                       value="{{ $experience->end_date ? $experience->end_date->format('Y-m-d') : '' }}"
+                                                       {{ $experience->is_current ? 'disabled' : '' }}>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input current-position" 
+                                                   id="is_current_{{ $index }}" name="work_experiences[{{ $index }}][is_current]"
+                                                   {{ $experience->is_current ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="is_current_{{ $index }}">I currently work here</label>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Responsibilities</label>
+                                            <textarea class="form-control" rows="3" name="work_experiences[{{ $index }}][responsibilities]">{{ $experience->responsibilities }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            
+                            <button type="button" class="btn btn-primary add-work-experience">
+                                <i class="fa-solid fa-plus"></i> Add Work Experience
+                            </button>
+                        </div>
+
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" id="updatePortfolioBtn">
                                 <i class="fa-solid fa-save"></i> Update Portfolio
                             </button>
                             <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">
@@ -227,9 +311,183 @@
     </div>
 </div>
 
+<!-- Template for new work experience item -->
+<template id="work_experience_template">
+    <div class="work-experience-item card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">New Experience</h6>
+            <button type="button" class="btn btn-sm btn-danger remove-experience">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Job Title</label>
+                <input type="text" class="form-control" name="work_experiences[__INDEX__][job_title]" required>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" name="work_experiences[__INDEX__][company_name]" required>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" class="form-control" name="work_experiences[__INDEX__][start_date]" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">End Date</label>
+                    <input type="date" class="form-control end-date" name="work_experiences[__INDEX__][end_date]">
+                </div>
+            </div>
+            
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input current-position" id="is_current___INDEX__" 
+                       name="work_experiences[__INDEX__][is_current]">
+                <label class="form-check-label" for="is_current___INDEX__">I currently work here</label>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Responsibilities</label>
+                <textarea class="form-control" rows="3" name="work_experiences[__INDEX__][responsibilities]"></textarea>
+            </div>
+        </div>
+    </div>
+</template>
+
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Define URLs for backend endpoints
+    const bannerUploadUrl = "{{ route('portfolios.upload-banner', $portfolio->id) }}";
+    
+    // Add form submission debug
+    const form = document.querySelector("form[action='{{ route('portfolios.update', $portfolio) }}']");
+    const updateBtn = document.getElementById('updatePortfolioBtn');
+    
+    if (form && updateBtn) {
+        form.addEventListener('submit', function(e) {
+            console.log('Form submission initiated', {
+                action: this.action,
+                method: this.method,
+                enctype: this.enctype
+            });
+        });
+        
+        updateBtn.addEventListener('click', function() {
+            console.log('Update button clicked');
+        });
+    }
+    
+    // Handle banner image upload with AJAX
+    const bannerImageInput = document.getElementById('banner_image');
+    if (bannerImageInput) {
+        bannerImageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const formData = new FormData();
+                formData.append('banner_image', this.files[0]);
+                formData.append('_token', '{{ csrf_token() }}');
+                
+                // Show loading indicator
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.className = 'alert alert-info mt-2';
+                loadingIndicator.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading banner image...';
+                this.parentNode.appendChild(loadingIndicator);
+                
+                // Disable the input
+                this.disabled = true;
+                
+                // Send the AJAX request
+                fetch(bannerUploadUrl, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Remove loading indicator
+                    loadingIndicator.remove();
+                    
+                    if (data.success) {
+                        // Show success message
+                        const successMsg = document.createElement('div');
+                        successMsg.className = 'alert alert-success mt-2';
+                        successMsg.innerHTML = '<i class="fa-solid fa-check"></i> Banner updated successfully';
+                        this.parentNode.appendChild(successMsg);
+                        
+                        // Show preview of the new banner immediately
+                        const bannerPreviewContainer = document.querySelector('.position-relative');
+                        
+                        if (bannerPreviewContainer) {
+                            // Update existing preview
+                            const previewImg = bannerPreviewContainer.querySelector('img');
+                            if (previewImg) {
+                                // Determine correct path format
+                                let imagePath = data.path;
+                                if (!imagePath.startsWith('http') && !imagePath.startsWith('/storage')) {
+                                    imagePath = `/storage/${imagePath}`;
+                                }
+                                
+                                // Update image path with timestamp to prevent caching issues
+                                previewImg.src = imagePath + '?t=' + new Date().getTime();
+                            }
+                        } else {
+                            // Create new preview if none exists
+                            const previewContainer = document.createElement('div');
+                            previewContainer.className = 'mb-3 position-relative';
+                            previewContainer.style.maxWidth = '400px';
+                            
+                            // Determine correct path format
+                            let imagePath = data.path;
+                            if (!imagePath.startsWith('http') && !imagePath.startsWith('/storage')) {
+                                imagePath = `/storage/${imagePath}`;
+                            }
+                            
+                            // Add preview with timestamp to prevent caching
+                            previewContainer.innerHTML = `
+                                <img src="${imagePath}?t=${new Date().getTime()}" 
+                                     class="img-fluid rounded border" 
+                                     alt="New Banner">
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-success">New Banner</span>
+                                </div>
+                            `;
+                            
+                            // Add the preview before the file input
+                            this.parentNode.parentNode.insertBefore(previewContainer, this.parentNode);
+                        }
+                        
+                        // No need to reload - banner is updated in the UI
+                    } else {
+                        // Show error message
+                        const errorMsg = document.createElement('div');
+                        errorMsg.className = 'alert alert-danger mt-2';
+                        errorMsg.textContent = data.message || 'Error uploading banner image';
+                        this.parentNode.appendChild(errorMsg);
+                        
+                        // Re-enable the input
+                        this.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    
+                    // Remove loading indicator
+                    loadingIndicator.remove();
+                    
+                    // Show error message
+                    const errorMsg = document.createElement('div');
+                    errorMsg.className = 'alert alert-danger mt-2';
+                    errorMsg.textContent = 'Error uploading banner image. Please try again.';
+                    this.parentNode.appendChild(errorMsg);
+                    
+                    // Re-enable the input
+                    this.disabled = false;
+                });
+            }
+        });
+    }
+    
     // Handle Skills
     const skillInputs = document.querySelector('.skill-inputs');
     const addSkillBtn = skillInputs.querySelector('.add-skill');
@@ -302,7 +560,79 @@ document.addEventListener('DOMContentLoaded', function() {
         socialInputs.insertBefore(wrapper, addSocialBtn);
         socialCount++;
     });
+    
+    // Work Experience Section Toggle
+    const showWorkExperience = document.getElementById('show_work_experience');
+    const workExperienceSection = document.getElementById('work_experience_section');
+    
+    if (showWorkExperience && workExperienceSection) {
+        showWorkExperience.addEventListener('change', function() {
+            if (this.checked) {
+                workExperienceSection.classList.remove('hidden');
+            } else {
+                workExperienceSection.classList.add('hidden');
+            }
+        });
+    }
+    
+    // Add Work Experience
+    const workExperiencesContainer = document.getElementById('work_experiences_container');
+    const addWorkExperienceBtn = document.querySelector('.add-work-experience');
+    const workExperienceTemplate = document.getElementById('work_experience_template');
+    let experienceIndex = document.querySelectorAll('.work-experience-item').length;
+    
+    if (addWorkExperienceBtn && workExperienceTemplate && workExperiencesContainer) {
+        addWorkExperienceBtn.addEventListener('click', function() {
+            const template = workExperienceTemplate.innerHTML;
+            const newExperience = template.replace(/__INDEX__/g, experienceIndex);
+            
+            // Create a div and set its HTML content
+            const container = document.createElement('div');
+            container.innerHTML = newExperience;
+            
+            // Get the first child (the actual work experience card)
+            const experienceCard = container.firstElementChild;
+            
+            // Append the card to the container
+            workExperiencesContainer.appendChild(experienceCard);
+            
+            // Setup event listeners for the new experience
+            setupExperienceListeners(experienceCard);
+            
+            experienceIndex++;
+        });
+        
+        // Setup existing work experience event listeners
+        document.querySelectorAll('.work-experience-item').forEach(item => {
+            setupExperienceListeners(item);
+        });
+        
+        function setupExperienceListeners(experienceItem) {
+            // Remove button
+            const removeBtn = experienceItem.querySelector('.remove-experience');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', function() {
+                    experienceItem.remove();
+                });
+            }
+            
+            // Current position checkbox
+            const currentCheckbox = experienceItem.querySelector('.current-position');
+            const endDateInput = experienceItem.querySelector('input[name$="[end_date]"]');
+            
+            if (currentCheckbox && endDateInput) {
+                currentCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        endDateInput.disabled = true;
+                        endDateInput.value = '';
+                    } else {
+                        endDateInput.disabled = false;
+                    }
+                });
+            }
+        }
+    }
 });
 </script>
 @endpush
-@endsection 
+@endsection
