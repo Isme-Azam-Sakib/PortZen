@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2025 at 12:24 PM
+-- Generation Time: May 18, 2025 at 06:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -120,7 +120,8 @@ INSERT INTO `gallery_images` (`id`, `portfolio_id`, `image_path`, `caption`, `so
 (26, 1, 'gallery/6kqsvuZvB2wqgJaBLe8x7bAasICREPMerNpC01VL.jpg', NULL, 16, '2025-05-18 02:54:14', '2025-05-18 02:54:22'),
 (27, 1, 'gallery/Lfp8PWNItAit0jqiWsLqwpgNwGgrGTBUL8ViZe1e.jpg', NULL, 26, '2025-05-18 02:54:14', '2025-05-18 02:54:14'),
 (28, 1, 'gallery/jk3fEXi20Bq5Aq7zQ9GotQeqQ52gqIelLcTl1X87.jpg', NULL, 27, '2025-05-18 02:54:14', '2025-05-18 02:54:14'),
-(29, 1, 'gallery/AN3Il4pUYPCQIVBAq4zpjYYf60X8ZX7LmcUo6cPm.jpg', NULL, 28, '2025-05-18 04:15:16', '2025-05-18 04:15:16');
+(29, 1, 'gallery/AN3Il4pUYPCQIVBAq4zpjYYf60X8ZX7LmcUo6cPm.jpg', NULL, 28, '2025-05-18 04:15:16', '2025-05-18 04:15:16'),
+(30, 1, 'gallery/XMBwZceCLYnQB9piK8g5nXifJFhW8XokUdHFgHIu.jpg', NULL, 29, '2025-05-18 07:22:10', '2025-05-18 07:22:10');
 
 -- --------------------------------------------------------
 
@@ -156,7 +157,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (15, '2025_05_18_080454_rename_order_to_sort_order_in_gallery_images', 1),
 (16, '2025_05_18_082421_create_gallery_images_table', 1),
 (17, '2025_05_18_090332_add_show_work_experience_to_portfolios_table', 2),
-(18, '2025_05_18_092949_update_work_experiences_table', 2);
+(18, '2025_05_18_092949_update_work_experiences_table', 2),
+(19, '2025_05_19_000000_add_avatar_to_users_table', 3),
+(20, '2025_05_18_153748_update_users_table_add_profile_fields', 4);
 
 -- --------------------------------------------------------
 
@@ -223,7 +226,7 @@ CREATE TABLE `portfolios` (
 --
 
 INSERT INTO `portfolios` (`id`, `user_id`, `template_id`, `title`, `full_name`, `tagline`, `bio`, `profile_image`, `banner_image`, `skills`, `tools`, `experience_level`, `email`, `phone`, `website_url`, `social_links`, `is_public`, `created_at`, `updated_at`, `heading_color`) VALUES
-(1, 1, 3, 'Sakib\'s portfolio', 'Isme Azam Sakibb', 'Graphics Designer sasds', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nulla', 'profile-images/TRTeoAnSl4N1XdO44VOBh5RopTc7owe9KXtrIJ5F.png', NULL, '[\"Graphics designnn\",\"UI\\/UX\",\"Photoshop\",\"Illustrator\"]', '[\"Photoshop\"]', 'intermediate', 'sakib@gmail.com', '01711387474', 'https://www.facebook.com/', '[{\"platform\":\"twitter\",\"url\":\"https:\\/\\/www.facebook.com\\/\"}]', 1, '2025-05-18 02:49:01', '2025-05-18 04:21:41', '#000000');
+(1, 1, 3, 'Sakib\'s portfolio', 'Isme Azam Sakib', 'UI/UX Designererr', 'Lorem ipsum dolor sit Bmet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nulla', 'profile-images/TRTeoAnSl4N1XdO44VOBh5RopTc7owe9KXtrIJ5F.png', 'banner-images/BBGcWbdQUbfDydKSyRqxQVhOiXUMaG0YvVBaa2YV.jpg', '[\"Graphics design\",\"UI\\/UX\",\"Illustrator\",\"jmmn\",\"dasd\"]', '[\"Photoshop\",\"Illustrator\",\"Canva\"]', 'intermediate', 'sakib@gmail.com', '01711387474', 'https://www.facebook.com/', '[{\"platform\":\"twitter\",\"url\":\"https:\\/\\/www.facebook.com\\/\"},{\"platform\":\"behance\",\"url\":\"https:\\/\\/www.facebook.com\\/\"},{\"platform\":\"dribbble\",\"url\":\"https:\\/\\/www.facebook.com\\/\"},{\"platform\":\"linkedin\",\"url\":\"https:\\/\\/www.facebook.com\\/\"},{\"platform\":\"instagram\",\"url\":\"https:\\/\\/www.facebook.com\\/\"}]', 1, '2025-05-18 02:49:01', '2025-05-18 10:36:03', '#2196f3');
 
 -- --------------------------------------------------------
 
@@ -265,7 +268,16 @@ CREATE TABLE `templates` (
 --
 
 INSERT INTO `templates` (`id`, `name`, `description`, `thumbnail`, `is_active`, `created_at`, `updated_at`) VALUES
-(3, 'Modern Portfolio', 'A clean, modern portfolio template.', 'images/templates/ellesi1.png', 1, '2025-05-18 02:43:52', '2025-05-18 02:43:52');
+(3, 'Modern Portfolio', 'A clean, modern portfolio template.', 'modern.png', 1, '2025-05-18 02:43:52', '2025-05-18 02:43:52'),
+(5, 'Classic Portfolio', 'Traditional and elegant portfolio template with a timeless design. Ideal for professionals in conventional industries.', 'classic.png', 1, '2025-05-18 16:05:44', '2025-05-18 16:05:44'),
+(6, 'Creative Portfolio', 'Bold and artistic portfolio template with unique layouts and interactive elements. Great for designers and artists.', 'creative.png', 1, '2025-05-18 16:05:44', '2025-05-18 16:05:44'),
+(7, 'Minimal Portfolio', 'Ultra-minimalist design focusing on content with lots of whitespace. Perfect for photographers and visual artists.', 'minimal.png', 1, '2025-05-18 16:05:44', '2025-05-18 16:05:44'),
+(8, 'Developer Portfolio', 'Tech-focused portfolio template with sections for projects, skills, and GitHub integration. Ideal for software developers.', 'developer.png', 1, '2025-05-18 16:05:44', '2025-05-18 16:05:44'),
+(9, 'Freelancer Portfolio', 'Versatile template with sections for services, testimonials, and project case studies. Perfect for freelancers.', 'freelancer.png', 0, '2025-05-18 16:05:44', '2025-05-18 16:05:44'),
+(10, 'Business Portfolio', 'Professional template with a corporate feel. Includes sections for services, team members, and client testimonials.', 'business.png', 0, '2025-05-18 16:05:44', '2025-05-18 16:05:44'),
+(11, 'Artist Portfolio', 'Gallery-focused template with large image displays and minimal text. Ideal for visual artists and photographers.', 'artist.png', 1, '2025-05-18 16:05:44', '2025-05-18 16:05:44'),
+(12, 'Writer Portfolio', 'Text-focused template with elegant typography and blog integration. Perfect for writers and content creators.', 'writer.png', 0, '2025-05-18 16:05:44', '2025-05-18 16:05:44'),
+(13, 'Architect Portfolio', 'Sophisticated template with large image galleries and project details. Ideal for architects and interior designers.', 'architect.png', 0, '2025-05-18 16:05:44', '2025-05-18 16:05:44');
 
 -- --------------------------------------------------------
 
@@ -295,6 +307,11 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `bio` text DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
@@ -306,8 +323,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Isme Azam Sakib', 'sakib@gmail.com', NULL, '$2y$10$hltglMS8BkP5WMU7d.vt8OKEDy7e2Rpe7zfoBwCQNqSAu3wdyGI.W', NULL, '2025-05-18 02:44:50', '2025-05-18 02:44:50');
+INSERT INTO `users` (`id`, `name`, `email`, `avatar`, `phone`, `bio`, `location`, `website`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Isme Azam Sakibb', 'sakibb@gmail.com', 'avatars/vUT0S9duQobmTyq2U7KFKtiD6XILBwgNqjUCQE2W.jpg', '01611387473', 'perdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies', 'Dhaka, Bangladesh', 'https://www.uitbd.com', NULL, '$2y$10$SrF4hf38rkyKijd5D7DJuu2RAQ5.nIXSwW/oduNSYpAuEt9dAUnKm', NULL, '2025-05-18 02:44:50', '2025-05-18 09:42:09');
 
 -- --------------------------------------------------------
 
@@ -334,9 +351,9 @@ CREATE TABLE `work_experiences` (
 --
 
 INSERT INTO `work_experiences` (`id`, `portfolio_id`, `company_name`, `job_title`, `start_date`, `end_date`, `is_current`, `responsibilities`, `location`, `created_at`, `updated_at`) VALUES
-(1, 1, 'PiaraBazar', 'Graphics Designer', '2023-02-01', '2023-05-01', 0, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.', NULL, '2025-05-18 03:34:08', '2025-05-18 03:34:08'),
-(2, 1, 'Mentors\'', 'UI/UX Designer', '2023-11-11', NULL, 1, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.', NULL, '2025-05-18 03:48:15', '2025-05-18 03:48:15'),
-(4, 1, 'sdfsdf', 'UI/UX Designer', '2025-01-11', '2025-05-18', 0, NULL, NULL, '2025-05-18 04:15:30', '2025-05-18 04:15:39');
+(1, 1, 'PiaraBazar', 'Graphics Designer', '2023-02-01', '2023-05-01', 0, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.', NULL, '2025-05-18 03:34:08', '2025-05-18 09:29:51'),
+(2, 1, 'Mentors\'', 'UI/UX Designer', '2023-11-11', NULL, 1, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.', NULL, '2025-05-18 03:48:15', '2025-05-18 09:29:51'),
+(4, 1, 'sdfsdf', 'UI/UX Designer', '2025-01-11', '2025-05-18', 0, NULL, NULL, '2025-05-18 04:15:30', '2025-05-18 09:29:51');
 
 --
 -- Indexes for dumped tables
@@ -458,13 +475,13 @@ ALTER TABLE `freelance_projects`
 -- AUTO_INCREMENT for table `gallery_images`
 --
 ALTER TABLE `gallery_images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -476,7 +493,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `portfolios`
 --
 ALTER TABLE `portfolios`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `portfolio_projects`
@@ -488,7 +505,7 @@ ALTER TABLE `portfolio_projects`
 -- AUTO_INCREMENT for table `templates`
 --
 ALTER TABLE `templates`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `testimonials`
